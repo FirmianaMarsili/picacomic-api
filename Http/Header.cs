@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace picacomic_api.Http
+namespace picacg
 
 {
     public enum HttpMethod
@@ -11,6 +11,9 @@ namespace picacomic_api.Http
         GET
     }
 
+    /// <summary>
+    /// 图片的质量
+    /// </summary>
     public enum ImageQuality
     {
         original,
@@ -18,6 +21,10 @@ namespace picacomic_api.Http
         medium,
         high
     }
+
+    /// <summary>
+    /// 构建所有在访问里需要的header
+    /// </summary>
     public class Header
     {
 
@@ -66,7 +73,7 @@ namespace picacomic_api.Http
         /// 需要重新登录
         /// 除登录以外都需要传入此token
         /// </summary>
-        public static string authorization;
+        private static string authorization;
 
         private string Url;
 
@@ -133,6 +140,16 @@ namespace picacomic_api.Http
         public string GetParam()
         {
             return param;
+        }
+
+        /// <summary>
+        /// 设置token
+        /// Token有时限，在数据返回无效token时就需要重新登录
+        /// </summary>
+        /// <param name="token"></param>
+        public static void SetAuthorization(string token)
+        {
+            authorization = token;
         }
 
 

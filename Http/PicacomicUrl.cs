@@ -2,30 +2,52 @@
 using System;
 using System.Text;
 
-namespace picacomic_api.Http
+namespace picacg
 {
-    /// <summary>
-    /// 所有函数需要POST还是GET均已标出
+    /// <summary>   
     /// 
-    /// 特别注意的是 如果返回的json里只有code = 200,message = "success"  说明此次后台未进行正确处理 ，大致原因有 method错误，param出错，格式不对、未urlencode、错误的urlencode等等，header错误等等
+    /// Api
     /// 
-    /// POST需要使用Post,
-    /// Get使用Get
+    /// 特别注意的是 如果返回的json里只有code = 200,message = "success"  说明此次后台未进行正确处理 ，大致原因有 method错误，param出错，格式不对、未urlencode、错误的urlencode等等，header错误等等   
+    /// 
+    /// 哔咔一般都是以40的数量为一页   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
+    /// 
     /// </summary>
 
     public class PicacomicUrl
     {
         #region Function-Ex
 
+        /// <summary>
+        /// 排序规则
+        /// </summary>
         public enum sort
         {
-            ua, //默认
-            dd, //新到旧
-            da, //旧到新
-            ld,  //爱心最多
-            vd  //绅士指数最多
+            /// <summary>
+            /// 默认
+            /// </summary>
+            ua,
+            /// <summary>
+            ///  新到旧
+            /// </summary>
+            dd,
+            /// <summary>
+            /// 旧到新
+            /// </summary>
+            da,
+            /// <summary>
+            /// 爱心最多
+            /// </summary>
+            ld,
+            /// <summary>
+            /// 绅士指数最多
+            /// </summary>
+            vd
         }
 
+        /// <summary>
+        /// 性别
+        /// </summary>
         public enum gender
         {
             m,
@@ -33,7 +55,9 @@ namespace picacomic_api.Http
             bot
         }
 
-
+        /// <summary>
+        /// 排行榜分类
+        /// </summary>
         public enum tt
         {
             H24,
@@ -70,12 +94,12 @@ namespace picacomic_api.Http
 
         /// <summary>
         /// 获取线路ip
+        /// WebClient.DownloadString(url);            
+        /// {"status":"ok","addresses":["104.20.180.50","104.20.181.50"],"waka":"https://ad-channel.wikawika.xyz","adKeyword":"wikawika"}
         /// </summary>      
         public static string GetChannelIp()
         {
             string url = "http://68.183.234.72/init";
-            //WebClient.DownloadString(url);
-            //{"status":"ok","addresses":["104.20.180.50","104.20.181.50"],"waka":"https://ad-channel.wikawika.xyz","adKeyword":"wikawika"}
             return url;
         }
         #endregion
@@ -104,9 +128,12 @@ namespace picacomic_api.Http
 
         /// <summary>
         /// 注册
-        /// </summary>
+        /// </summary>       
+        /// <param name="birthday">yyyy/mm/dd</param>       
+        /// 
+        /// <param name="question1">问题1</param>
+        /// <param name="answer1">答案1</param>       
         /// <returns></returns>
-
         public static Header Register(
             string username,
             string password,
@@ -147,7 +174,7 @@ namespace picacomic_api.Http
         /// <summary>
         /// 个人资料
         /// </summary>
-        /// <param name="id">传入id时则查询对应id,不传时则查询自己</param>
+        /// <param name="id">传入_id时则查询对应_id,不传时则查询自己</param>
         public static Header Profile(string id = "")
         {
             string url = $"users/{(id == "" ? "" : id + "/")}profile";
@@ -177,6 +204,11 @@ namespace picacomic_api.Http
             return header;
         }
 
+        /// <summary>
+        /// 我的评论
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public static Header GetMyComments(int page = 1)
         {
             Header header = new($"users/my-comments?page={page.ToString()}");
@@ -279,7 +311,6 @@ namespace picacomic_api.Http
         public static Header Search(string keyword, int page = 1)
         {
             Header header = new(url: $"comics/search?page={page.ToString()}&q={UrlEncode(keyword)}");
-            Console.WriteLine(header.GetUrl());
             return header;
         }
 
@@ -305,6 +336,11 @@ namespace picacomic_api.Http
             return header;
         }
 
+        /// <summary>
+        /// 看了這本子的人也在看
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
         public static Header Recommendation(string bookId)
         {
             Header header = new(url: $"comics/{bookId}/recommendation");
@@ -313,12 +349,6 @@ namespace picacomic_api.Http
 
         /// <summary>
         /// 获取本子的章节信息
-        /// 
-        /// 哔咔一般以40为一组，例如40章为一页  41章属于第二页
-        /// 
-        /// 如果传入页面后 返回的数据里docs为空,说明章节不足 (page - 1) * 40 + 1 
-        /// 可以不用再继续查询下去 也可以在上一页码里 通过total和limit字段比较是否需要继续查询下一页
-        /// 
         /// docs里的_id order 需要记住
         /// 下面的函数需要使用
         /// 
@@ -338,7 +368,6 @@ namespace picacomic_api.Http
         /// </summary>
         /// <param name="bookId"></param>
         /// <param name="epsId">查看上面那个函数 </param>
-        /// <param name="page"> 一般是40张图片为一页，返回的字段里 total为实际返回的 limit为总张数 </param>
         /// <returns></returns>
         public static Header GetComicsBookOrder(string bookId, int epsId, int page = 1)
         {
@@ -383,7 +412,7 @@ namespace picacomic_api.Http
         /// <returns></returns>
         public static Header EverybodyLoves(int page = 1)
         {
-            Header header = new(url:$"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
+            Header header = new(url: $"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
             return header;
         }
 
@@ -391,9 +420,6 @@ namespace picacomic_api.Http
         /// <summary>
         /// 下载一个图片
         /// 图片信息里包含里此两个参数
-        /// 
-        /// 
-        /// 
         /// </summary>
         /// <param name="fileServer"></param>
         /// <param name="path"></param>
@@ -442,7 +468,7 @@ namespace picacomic_api.Http
         {
             Header header = new(
                 url: $"comments/{comentId}/like",
-                method:HttpMethod.POST);
+                method: HttpMethod.POST);
             return header;
         }
 

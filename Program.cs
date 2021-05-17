@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using picacomic_api.Http;
+using picacg;
 namespace picacomic_api
 {
     class Program
     {
         static async System.Threading.Tasks.Task Main(string[] args)
         {         
-            string msg_login = await Http.HttpWeb.SendAsync(PicacomicUrl.Login(
+            string msg_login = await HttpWeb.SendAsync(PicacomicUrl.Login(
                 username:"",
                 password: ""));
             if (!string.IsNullOrEmpty(msg_login))
@@ -19,7 +19,7 @@ namespace picacomic_api
                 {
 
                     Console.WriteLine("登录成功");
-                    Header.authorization = (string)jd["data"]["token"];  //登录成功以后将token保存
+                    Header.SetAuthorization((string)jd["data"]["token"]);  //登录成功以后将token保存
 
                     string msg_profile = await HttpWeb.SendAsync(PicacomicUrl.Profile());
                     Console.WriteLine(msg_profile);

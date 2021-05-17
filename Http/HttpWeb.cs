@@ -3,13 +3,18 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic_api.Http
+namespace picacg
 {
+    /// <summary>
+    /// 只是对HttpClient的一个简单的封装
+    /// </summary>
     public class HttpWeb
     {
-        private static HttpClient httpClient = new() {
+        private static HttpClient httpClient = new()
+        {
             BaseAddress = new(Header.baseUrl),
-            Timeout = new TimeSpan(0, 0, 3) };
+            Timeout = new TimeSpan(0, 0, 3)
+        };
 
         private static HttpClient httpClientDownload = new() { Timeout = new TimeSpan(0, 0, 6) };
 
@@ -30,7 +35,7 @@ namespace picacomic_api.Http
                 }
                 HttpResponseMessage response;
                 if (header.MethodIsPost)
-                {                    
+                {
                     var content = new StringContent(header.GetParam(), Encoding.UTF8, "application/json");
                     content.Headers.ContentType.CharSet = "UTF-8";
                     response = await httpClient.PostAsync(url, content);
@@ -55,7 +60,7 @@ namespace picacomic_api.Http
         {
 
             try
-            {                
+            {
                 HttpResponseMessage response = await httpClientDownload.GetAsync(url);
                 System.IO.Stream streamToReadFrom = await response.Content.ReadAsStreamAsync();
                 return streamToReadFrom;
