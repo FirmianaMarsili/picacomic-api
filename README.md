@@ -6,3 +6,6 @@
  
 # 感谢
   [https://github.com/tonquer/picacg-windows](https://github.com/tonquer/picacg-windows)
+  
+# 衍生项目
+  [哔咔自动签到](https://github.com/FirmianaMarsili/picacomic-Punch)
