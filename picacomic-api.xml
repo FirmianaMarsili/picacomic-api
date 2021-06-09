@@ -311,17 +311,17 @@
             <param name="content"></param>
             <returns></returns>
         </member>
-        <member name="T:picacomic_api.Http.Response.Login">
+        <member name="T:picacomic.Http.Response.Login">
             <summary>
             登录
             </summary>
         </member>
-        <member name="T:picacomic_api.Http.Response.Register">
+        <member name="T:picacomic.Http.Response.Register">
             <summary>
             不出错就是成功！
             </summary>
         </member>
-        <member name="T:picacomic_api.Http.Response.ResponseBase`1">
+        <member name="T:picacomic.Http.Response.ResponseBase`1">
             <summary>
             接口返回的数据
             </summary>

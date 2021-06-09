@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
    public  class AddFavourite
     {

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using picacg;
-namespace picacomic_api
+namespace picacomic
 {
     class Program
     {        

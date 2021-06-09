@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using picacomic_api.Http.Response;
+using picacomic.Http.Response;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacg
+namespace picacomic
 {
     /// <summary>   
     /// 
@@ -388,10 +388,10 @@ namespace picacg
         /// 随机一个本子
         /// </summary>
         /// <returns></returns>
-        public static async Task<picacomic_api.Http.Response.GetRandom> GetRandom()
+        public static async Task<picacomic.Http.Response.GetRandom> GetRandom()
         {
             Header header = new(url: "comics/random");
-            return await HttpWeb.SendAsync<picacomic_api.Http.Response.GetRandom>(header);
+            return await HttpWeb.SendAsync<picacomic.Http.Response.GetRandom>(header);
         }
 
         /// <summary>

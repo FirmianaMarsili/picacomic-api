@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
     public class GetComments
     {
@@ -72,7 +72,7 @@ namespace picacomic_api.Http.Response
         public string Id { get; set; }
 
         [JsonProperty("gender")]
-        public picacg.PicacomicUrl.gender Gender { get; set; }
+        public PicacomicUrl.gender Gender { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -84,10 +84,10 @@ namespace picacomic_api.Http.Response
         public bool Verified { get; set; }
 
         [JsonProperty("exp")]
-        public long Exp { get; set; }
+        public int Exp { get; set; }
 
         [JsonProperty("level")]
-        public long Level { get; set; }
+        public int Level { get; set; }
 
         [JsonProperty("characters")]
         public object[] Characters { get; set; }
@@ -129,13 +129,13 @@ namespace picacomic_api.Http.Response
         public bool Hide { get; set; }
 
         [JsonProperty("created_at")]
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [JsonProperty("likesCount")]
-        public long LikesCount { get; set; }
+        public int LikesCount { get; set; }
 
         [JsonProperty("commentsCount")]
-        public long CommentsCount { get; set; }
+        public int CommentsCount { get; set; }
 
         [JsonProperty("isLiked")]
         public bool IsLiked { get; set; }

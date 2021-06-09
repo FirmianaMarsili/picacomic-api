@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace picacg
+namespace picacomic
 
 {
     public enum HttpMethod

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
     public class GetComicsBookEps
     {

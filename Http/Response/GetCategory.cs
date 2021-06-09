@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
     public class GetCategory
     {

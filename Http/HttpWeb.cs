@@ -1,10 +1,10 @@
-﻿using picacomic_api.Http.Response;
+﻿using picacomic.Http.Response;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacg
+namespace picacomic
 {
     /// <summary>
     /// 只是对HttpClient的一个简单的封装

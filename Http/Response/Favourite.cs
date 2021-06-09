@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
     public class Favourite
     {
@@ -38,16 +38,16 @@ namespace picacomic_api.Http.Response
         public string Author { get; set; }
 
         [JsonProperty("totalViews")]
-        public long TotalViews { get; set; }
+        public int TotalViews { get; set; }
 
         [JsonProperty("totalLikes")]
-        public long TotalLikes { get; set; }
+        public int TotalLikes { get; set; }
 
         [JsonProperty("pagesCount")]
-        public long PagesCount { get; set; }
+        public int PagesCount { get; set; }
 
         [JsonProperty("epsCount")]
-        public long EpsCount { get; set; }
+        public int EpsCount { get; set; }
 
         [JsonProperty("finished")]
         public bool Finished { get; set; }
@@ -59,7 +59,7 @@ namespace picacomic_api.Http.Response
         public Thumb Thumb { get; set; }
 
         [JsonProperty("likesCount")]
-        public long LikesCount { get; set; }
+        public int LikesCount { get; set; }
     }
 
     public class Thumb

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic_api.Http.Response
+namespace picacomic.Http.Response
 {
     /// <summary>
     /// 接口返回的数据
