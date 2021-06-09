@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace picacomic_api.Http.Response
 {
-    public class Categories
+    public class GetCategory
     {
         [JsonProperty("categories")]
-        public List<Category> Categorie { get; set; }
+        public List<Categorie> Categories { get; set; }
     }
-    public class Category
+    public class Categorie
     {
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -33,17 +33,5 @@ namespace picacomic_api.Http.Response
 
         [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
         public string Description { get; set; }
-    }
-
-    public class Thumb
-    {
-        [JsonProperty("originalName")]
-        public string OriginalName { get; set; }
-
-        [JsonProperty("path")]
-        public string Path { get; set; }
-
-        [JsonProperty("fileServer")]
-        public Uri FileServer { get; set; }
     }
 }

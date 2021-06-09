@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace picacomic_api.Http.Response
 {
-    public class MyComments
+    public class GetMyComments
     {
         [JsonProperty("comments")]
-        public Comments Comments { get; set; }
+        public Comments_MyComments Comments { get; set; }
     }
-    public class Comments
+    public class Comments_MyComments
     {
         [JsonProperty("docs")]
-        public List<Doc> Docs { get; set; }
+        public List<Doc_MyComments> Docs { get; set; }
 
         [JsonProperty("total")]
         public int Total { get; set; }
@@ -28,7 +28,7 @@ namespace picacomic_api.Http.Response
         public int Pages { get; set; }
     }
 
-    public class Doc
+    public class Doc_MyComments
     {
         [JsonProperty("_id")]
         public string Id { get; set; }
@@ -37,7 +37,7 @@ namespace picacomic_api.Http.Response
         public string Content { get; set; }
 
         [JsonProperty("_comic")]
-        public Comic Comic { get; set; }
+        public Comic_MyComments Comic { get; set; }
 
         [JsonProperty("hide")]
         public bool Hide { get; set; }
@@ -58,7 +58,7 @@ namespace picacomic_api.Http.Response
         public bool IsLiked { get; set; }
     }
 
-    public class Comic
+    public class Comic_MyComments
     {
         [JsonProperty("_id")]
         public string Id { get; set; }

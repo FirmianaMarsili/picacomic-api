@@ -201,10 +201,10 @@ namespace picacg
         /// 聊天室
         /// </summary>
         /// <returns></returns>
-        public static async Task<Chat> GetChat()
+        public static async Task<GetChat> GetChat()
         {
             Header header = new(url: "chat");
-            return await HttpWeb.SendAsync<Chat>(header);
+            return await HttpWeb.SendAsync<GetChat>(header);
         }
 
         /// <summary>
@@ -212,10 +212,10 @@ namespace picacg
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<MyComments> GetMyComments(int page = 1)
+        public static async Task<GetMyComments> GetMyComments(int page = 1)
         {
             Header header = new($"users/my-comments?page={page.ToString()}");
-            return await HttpWeb.SendAsync<MyComments>(header);
+            return await HttpWeb.SendAsync<GetMyComments>(header);
         }
 
 
@@ -228,30 +228,30 @@ namespace picacg
         /// 获取App基本信息
         /// </summary>
         /// <returns></returns>
-        public static async Task<Platform> GetPlatform()
+        public static async Task<GetPlatform> GetPlatform()
         {
             Header header = new(url: "init?platform=android");
-            return await HttpWeb.SendAsync<Platform>(header);
+            return await HttpWeb.SendAsync<GetPlatform>(header);
         }
 
         /// <summary>
         /// 获取app主页上几大目录
         /// </summary>
         /// <returns></returns>
-        public static async Task<Categories> GetCategory()
+        public static async Task<GetCategory> GetCategory()
         {
             Header header = new(url: "categories");
-            return await HttpWeb.SendAsync<Categories>(header);
+            return await HttpWeb.SendAsync<GetCategory>(header);
         }
 
         /// <summary>
         /// 获取收藏
         /// </summary>
         /// <param name="page"></param>        
-        public static Header Favourite(sort sort, int page = 1)
+        public static async Task<Favourite> Favourite(sort sort = sort.ua, int page = 1)
         {
             Header header = new(url: $"users/favourite?s={sort.ToString()}&page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<Favourite>(header);
         }
 
         /// <summary>
@@ -259,12 +259,12 @@ namespace picacg
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
-        public static Header AddFavourite(string bookId)
+        public static async Task<AddFavourite> AddFavourite(string bookId)
         {
             Header header = new(
                 url: $"comics/{bookId}/favourite",
                 method: HttpMethod.POST);
-            return header;
+            return await HttpWeb.SendAsync<AddFavourite>(header);
         }
 
 
@@ -275,26 +275,24 @@ namespace picacg
         /// <param name="categories">本子标签</param>
         /// <param name="sort">排序  </param>
         /// <returns></returns>
-        public static Header CategoriesSearch(string categories, sort sort, int page = 1)
+        public static async Task<CategoriesSearch> CategoriesSearch(string categories, int page = 1, sort sort = sort.ua)
         {
             Header header = new(url: $"comics?page={page.ToString()}&c={UrlEncode(categories)}&s={sort.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<CategoriesSearch>(header);
         }
 
         /// <summary>
-        /// 高级搜索
+        /// 关键词搜索
         /// </summary>
-        /// <param name="categories">上同</param>
-        /// <param name="keyword">上同</param>
-        /// <param name="page">上同</param>
-        /// <param name="sort">上同</param>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="sort"></param>
         /// <returns></returns>
-        public static Header AdvancedSearch(string categories, sort sort, string keyword = "", int page = 1)
+        public static async Task<AdvancedSearch> AdvancedSearch(string keyword, int page = 1, sort sort = sort.ua)
         {
             JObject jd = new()
             {
-                ["categories"] = UrlEncode(categories),
-                ["keyword"] = UrlEncode(keyword),
+                ["keyword"] = keyword,
                 ["sort"] = sort.ToString()
             };
             Header header = new(
@@ -302,7 +300,7 @@ namespace picacg
                 method: HttpMethod.POST,
                 param: jd.ToString());
 
-            return header;
+            return await HttpWeb.SendAsync<AdvancedSearch>(header);
         }
 
         /// <summary>
@@ -311,10 +309,10 @@ namespace picacg
         /// <param name="keyword"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header Search(string keyword, int page = 1)
+        public static async Task<Search> Search(string keyword, int page = 1)
         {
             Header header = new(url: $"comics/search?page={page.ToString()}&q={UrlEncode(keyword)}");
-            return header;
+            return await HttpWeb.SendAsync<Search>(header);
         }
 
         /// <summary>
@@ -322,10 +320,10 @@ namespace picacg
         /// </summary>
         /// <param name="day"> H24  D7  D30</param>
         /// <returns></returns>
-        public static Header Rank(tt tt)
+        public static async Task<Rank> Rank(tt tt)
         {
             Header header = new(url: $"comics/leaderboard?tt={tt.ToString()}&ct=VC");
-            return header;
+            return await HttpWeb.SendAsync<Rank>(header);
         }
 
         /// <summary>
@@ -333,36 +331,34 @@ namespace picacg
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
-        public static Header GetComicsBook(string bookId)
+        public static async Task<GetComicsBook> GetComicsBook(string bookId)
         {
             Header header = new(url: $"comics/{bookId}");
-            return header;
+            return await HttpWeb.SendAsync<GetComicsBook>(header);
         }
 
         /// <summary>
         /// 看了這本子的人也在看
+        /// 暂时无数据
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
-        public static Header Recommendation(string bookId)
+        public static async Task<Recommendation> Recommendation(string bookId)
         {
             Header header = new(url: $"comics/{bookId}/recommendation");
-            return header;
+            return await HttpWeb.SendAsync<Recommendation>(header);
         }
 
         /// <summary>
         /// 获取本子的章节信息
-        /// docs里的_id order 需要记住
-        /// 下面的函数需要使用
-        /// 
         /// </summary>
         /// <param name="bookId"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header GetComicsBookEps(string bookId, int page = 1)
+        public static async Task<GetComicsBookEps> GetComicsBookEps(string bookId, int page = 1)
         {
             Header header = new(url: $"comics/{bookId}/eps?page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<GetComicsBookEps>(header);
         }
 
 
@@ -372,40 +368,40 @@ namespace picacg
         /// <param name="bookId"></param>
         /// <param name="epsId">查看上面那个函数 </param>
         /// <returns></returns>
-        public static Header GetComicsBookOrder(string bookId, int epsId, int page = 1)
+        public static async Task<GetComicsBookOrder> GetComicsBookOrder(string bookId, int epsId, int page = 1)
         {
             Header header = new(url: $"comics/{bookId}/order/{epsId.ToString()}/pages?page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<GetComicsBookOrder>(header);
         }
 
         /// <summary>
         /// 获取热词
         /// </summary>
         /// <returns></returns>
-        public static Header GetKeywords()
+        public static async Task<GetKeywords> GetKeywords()
         {
             Header header = new(url: "keywords");
-            return header;
+            return await HttpWeb.SendAsync<GetKeywords>(header);
         }
 
         /// <summary>
         /// 随机一个本子
         /// </summary>
         /// <returns></returns>
-        public static Header GetRandom()
+        public static async Task<picacomic_api.Http.Response.GetRandom> GetRandom()
         {
             Header header = new(url: "comics/random");
-            return header;
+            return await HttpWeb.SendAsync<picacomic_api.Http.Response.GetRandom>(header);
         }
 
         /// <summary>
         /// 本子神推荐
         /// </summary>
         /// <returns></returns>
-        public static Header GetCollections()
+        public static async Task<GetCollections> GetCollections()
         {
             Header header = new(url: "collections");
-            return header;
+            return await HttpWeb.SendAsync<GetCollections>(header);
         }
 
         /// <summary>
@@ -413,23 +409,23 @@ namespace picacg
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header EverybodyLoves(int page = 1)
+        public static async Task<EverybodyLoves> EverybodyLoves(int page = 1)
         {
             Header header = new(url: $"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
-            return header;
+            return await HttpWeb.SendAsync<EverybodyLoves>(header);
         }
 
 
         /// <summary>
         /// 下载一个图片
         /// 图片信息里包含里此两个参数
+        /// 构建一个url,自己实现
         /// </summary>
         /// <param name="fileServer"></param>
         /// <param name="path"></param>
         /// <returns></returns>
         public static string DownloadBook(string fileServer, string path)
         {
-
             //使用HttpClient WebClient HttpWebRequest 都可以，不需要设置header
             return $"{fileServer}/static/{path}";
         }
@@ -437,13 +433,13 @@ namespace picacg
         /// <summary>
         /// 获取某个本子的评论
         /// </summary>
-        /// <param name="bookId"></param>
+        /// <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header GetComments(string bookId = "5822a6e3ad7ede654696e482" /*此为哔咔留言板默认的ID*/, int page = 1)
+        public static async Task<GetComments> GetComments(string bookId = "5822a6e3ad7ede654696e482" , int page = 1)
         {
             Header header = new(url: $"comics/{bookId}/comments?page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<GetComments>(header);
         }
 
         /// <summary>
@@ -452,37 +448,36 @@ namespace picacg
         /// <param name="comentId"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header GetCommentsChildren(string comentId, int page = 1)
+        public static async Task<GetCommentsChildren> GetCommentsChildren(string comentId, int page = 1)
         {
             Header header = new(url: $"comments/{comentId}/childrens?page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<GetCommentsChildren>(header);
         }
 
         /// <summary>
         /// 点赞某个评论
         /// 对已经点赞过的发送会取消点赞
         /// 可通过评论里isLiked字段进行判断
-        /// 返回的数据里["data"]["action"]也会告诉是点赞还是取消
-        /// 
+        /// 返回的数据里["data"]["action"]也会告诉是点赞还是取消        
         /// </summary>
         /// <param name="comentId"></param>
         /// <returns></returns>
-        public static Header LikeComment(string comentId)
+        public static async Task<LikeComment> LikeComment(string comentId)
         {
             Header header = new(
                 url: $"comments/{comentId}/like",
                 method: HttpMethod.POST);
-            return header;
+            return await HttpWeb.SendAsync<LikeComment>(header);
         }
 
 
         /// <summary>
         /// 发送评论
         /// </summary>
-        /// <param name="bookId"></param>
+        /// <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
         /// <param name="content">评论内容</param>
         /// <returns></returns>
-        public static Header SendComment(string content, string bookId = "5822a6e3ad7ede654696e482" /*此为哔咔留言板默认的ID*/)
+        public static async Task<SendComment> SendComment(string content, string bookId = "5822a6e3ad7ede654696e482")
         {
             JObject jd = new()
             {
@@ -493,7 +488,7 @@ namespace picacg
                 url: $"comics/{bookId}/comments",
                 method: HttpMethod.POST,
                 param: jd.ToString());
-            return header;
+            return await HttpWeb.SendAsync<SendComment>(header);
         }
 
         /// <summary>
@@ -502,7 +497,7 @@ namespace picacg
         /// <param name="comentId"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public static Header SendCommentChild(string comentId, string content)
+        public static async Task<SendComment> SendCommentChild(string comentId, string content)
         {
             JObject jd = new()
             {
@@ -513,7 +508,7 @@ namespace picacg
                 url: $"comments/{comentId}",
                 method: HttpMethod.POST,
                 param: jd.ToString());
-            return header;
+            return await HttpWeb.SendAsync<SendComment>(header);
         }
 
         #endregion

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace picacomic_api.Http.Response
 {
-    public class Chat
+    public class GetChat
     {
         [JsonProperty("chatList")]
         public List<ChatList> ChatList { get; set; }

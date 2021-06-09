@@ -34,7 +34,7 @@ namespace picacomic_api.Http.Response
         public int Level { get; set; }
 
         [JsonProperty("characters")]
-        public List<object> Characters { get; set; }
+        public object[] Characters { get; set; }
 
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }

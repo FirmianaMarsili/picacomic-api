@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace picacomic_api.Http.Response
 {
-    public class Platform
+    public class GetPlatform
     {
         [JsonProperty("isPunched")]
         public bool IsPunched { get; set; }
@@ -22,7 +22,7 @@ namespace picacomic_api.Http.Response
         public int MinApiLevel { get; set; }
 
         [JsonProperty("categories")]
-        public List<Category> Categories { get; set; }
+        public List<GetCategory> Categories { get; set; }
 
         [JsonProperty("notification")]
         public object Notification { get; set; }
