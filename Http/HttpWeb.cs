@@ -44,7 +44,6 @@ namespace picacg
                 response = await httpClient.GetAsync(url);
             }
             var responseString = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseString);
             var Data = ResponseBase<T>.FromJson(responseString);
             if (Data.Success)
             {
@@ -54,23 +53,6 @@ namespace picacg
             {
                 throw new Exception($"URL: {header.GetUrl()} \n 错误信息：{Data.Message} \n {Data.Detail}");
             }            
-        }
-
-
-        public static async Task<System.IO.Stream> DownloadAsync(string url)
-        {
-
-            try
-            {
-                HttpResponseMessage response = await httpClientDownload.GetAsync(url);
-                System.IO.Stream streamToReadFrom = await response.Content.ReadAsStreamAsync();
-                return streamToReadFrom;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-        }
+        }       
     }
 }
