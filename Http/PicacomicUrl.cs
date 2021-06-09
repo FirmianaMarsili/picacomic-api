@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
+using picacomic_api.Http.Response;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace picacg
 {
@@ -112,18 +114,19 @@ namespace picacg
         /// <summary>
         /// 登录
         /// </summary>
-        public static Header Login(string username, string password)
+        public static async Task<Login> Login(string email, string password)
         {
             JObject jd = new()
             {
-                ["email"] = username,
+                ["email"] = email,
                 ["password"] = password
             };
             Header header = new(
                 url: "auth/sign-in",
                 method: HttpMethod.POST,
                 param: jd.ToString());
-            return header;
+
+            return await HttpWeb.SendAsync<Login>(header);
         }
 
         /// <summary>
@@ -134,8 +137,8 @@ namespace picacg
         /// <param name="question1">问题1</param>
         /// <param name="answer1">答案1</param>       
         /// <returns></returns>
-        public static Header Register(
-            string username,
+        public static async Task<Register> Register(
+            string email,
             string password,
             string name,
             string birthday, //yyyy/mm/dd
@@ -149,7 +152,7 @@ namespace picacg
         {
             JObject jd = new()
             {
-                ["email"] = username,
+                ["email"] = email,
                 ["password"] = password,
                 ["name"] = name,
                 ["birthday"] = birthday,
@@ -167,7 +170,7 @@ namespace picacg
                 url: "auth/register",
                 method: HttpMethod.POST,
                 param: jd.ToString());
-            return header;
+            return await HttpWeb.SendAsync<Register>(header);
         }
 
 
@@ -175,33 +178,33 @@ namespace picacg
         /// 个人资料
         /// </summary>
         /// <param name="id">传入_id时则查询对应_id,不传时则查询自己</param>
-        public static Header Profile(string id = "")
+        public static async Task<Profile> Profile(string id = "")
         {
             string url = $"users/{(id == "" ? "" : id + "/")}profile";
             Header header = new(url: url);
-            return header;
+            return await HttpWeb.SendAsync<Profile>(header);
         }
 
 
         /// <summary>
         /// 签到
         /// </summary>
-        public static Header Punch()
+        public static async Task<Punch> Punch()
         {
             Header header = new(
                 url: "users/punch-in",
                 method: HttpMethod.POST);
-            return header;
+            return await HttpWeb.SendAsync<Punch>(header);
         }
 
         /// <summary>
         /// 聊天室
         /// </summary>
         /// <returns></returns>
-        public static Header GetChat()
+        public static async Task<Chat> GetChat()
         {
             Header header = new(url: "chat");
-            return header;
+            return await HttpWeb.SendAsync<Chat>(header);
         }
 
         /// <summary>
@@ -209,10 +212,10 @@ namespace picacg
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static Header GetMyComments(int page = 1)
+        public static async Task<MyComments> GetMyComments(int page = 1)
         {
             Header header = new($"users/my-comments?page={page.ToString()}");
-            return header;
+            return await HttpWeb.SendAsync<MyComments>(header);
         }
 
 
@@ -222,23 +225,23 @@ namespace picacg
         #region Book 
 
         /// <summary>
-        /// 同下，可在初始时保存其中的ImageServer，不过应该与下面函数里fileServer有同样的效果
+        /// 获取App基本信息
         /// </summary>
         /// <returns></returns>
-        public static Header GetImageKey()
+        public static async Task<Platform> GetPlatform()
         {
             Header header = new(url: "init?platform=android");
-            return header;
+            return await HttpWeb.SendAsync<Platform>(header);
         }
 
         /// <summary>
         /// 获取app主页上几大目录
         /// </summary>
         /// <returns></returns>
-        public static Header GetCategory()
+        public static async Task<Categories> GetCategory()
         {
             Header header = new(url: "categories");
-            return header;
+            return await HttpWeb.SendAsync<Categories>(header);
         }
 
         /// <summary>

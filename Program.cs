@@ -6,33 +6,15 @@ namespace picacomic_api
 {
     class Program
     {
+        public static string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGMwOTFlOWQ2MmEyYzc3Mjg3YTBiYjEiLCJlbWFpbCI6InF3ZXJ0cmZ4ZGQiLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6Im1tLjJkIiwidmVyc2lvbiI6IjIuMi4xLjIuMy40IiwiYnVpbGRWZXJzaW9uIjoiNDUiLCJwbGF0Zm9ybSI6ImFuZHJvaWQiLCJpYXQiOjE2MjMyMzMxNjYsImV4cCI6MTYyMzgzNzk2Nn0.hOoJX8ONhpVSVlDimsdtKDw9fwmakKF3muFgfbq_3tM";
+        public static string token_a = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2Y4OTgxM2FhZTFjYjI4ODM1Y2RjNTUiLCJlbWFpbCI6ImE2MjE0MDE2Iiwicm9sZSI6Im1lbWJlciIsIm5hbWUiOiJtaWtvdCIsInZlcnNpb24iOiIyLjIuMS4yLjMuNCIsImJ1aWxkVmVyc2lvbiI6IjQ1IiwicGxhdGZvcm0iOiJhbmRyb2lkIiwiaWF0IjoxNjIzMjMzNDQ2LCJleHAiOjE2MjM4MzgyNDZ9.X9Xm8elvwwMby0yXNepox2Xfl5Js63jD9eQLR3FYi-U";
         static async System.Threading.Tasks.Task Main(string[] args)
-        {         
-            string msg_login = await HttpWeb.SendAsync(PicacomicUrl.Login(
-                username:"",
-                password: ""));
-            if (!string.IsNullOrEmpty(msg_login))
+        {
+            Header.SetAuthorization(token_a);
+            var login = await PicacomicUrl.GetPlatform();
+            if (login != null)
             {
-                Console.WriteLine(msg_login);
-                JObject jd = JObject.Parse(msg_login);
-                if ((int)jd["code"] == 200 && (string)jd["message"] == "success")
-                {
-
-                    Console.WriteLine("登录成功");
-                    Header.SetAuthorization((string)jd["data"]["token"]);  //登录成功以后将token保存
-
-                    string msg_profile = await HttpWeb.SendAsync(PicacomicUrl.Profile());
-                    Console.WriteLine(msg_profile);
-                    if (string.IsNullOrEmpty(msg_profile))
-                    {
-                        JObject jd_profile = JObject.Parse(msg_profile);
-                        if (!(bool)jd_profile["isPunched"]) // 判断是否已经签到
-                        {
-                            _ = await HttpWeb.SendAsync(PicacomicUrl.Punch()); //进行签到
-                        }
-                    }
-                    
-                }
+                ;
             }
             
 
