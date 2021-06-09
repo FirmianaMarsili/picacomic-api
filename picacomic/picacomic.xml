@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>picacomic</name>
+    </assembly>
+    <members>
+        <member name="T:picacomic.ImageQuality">
+            <summary>
+            图片的质量
+            </summary>
+        </member>
+        <member name="T:picacomic.Header">
+            <summary>
+            构建所有在访问里需要的header
+            </summary>
+        </member>
+        <member name="F:picacomic.Header.channel">
+            <summary>
+            线路
+            </summary>
+        </member>
+        <member name="F:picacomic.Header.authorization">
+            <summary>
+            登录成功后所返回的token，长时间后会失效
+            需要重新登录
+            除登录以外都需要传入此token
+            </summary>
+        </member>
+        <member name="F:picacomic.Header.content_type">
+            <summary>
+            POST时需要设置为"application/json; charset=UTF-8"
+            因HttpClient规则所限，此值可以不用理会，已在所有Post时添加
+            原因参考于"https://github.com/dotnet/runtime/issues/17036#issuecomment-212023809"
+            </summary>
+        </member>
+        <member name="M:picacomic.Header.SetAuthorization(System.String)">
+            <summary>
+            设置token
+            Token有时限，在数据返回无效token时就需要重新登录
+            </summary>
+            <param name="token"></param>
+        </member>
+        <member name="T:picacomic.HttpWeb">
+            <summary>
+            只是对HttpClient的一个简单的封装
+            </summary>
+        </member>
+        <member name="T:picacomic.PicacomicUrl">
+            <summary>   
+            
+            Api
+            
+            特别注意的是 如果返回的json里只有code = 200,message = "success"  说明此次后台未进行正确处理 ，大致原因有 method错误，param出错，格式不对、未urlencode、错误的urlencode等等，header错误等等   
+            
+            哔咔一般都是以40的数量为一页   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
+            
+            </summary>
+        </member>
+        <member name="T:picacomic.PicacomicUrl.sort">
+            <summary>
+            排序规则
+            </summary>
+        </member>
+        <member name="F:picacomic.PicacomicUrl.sort.ua">
+            <summary>
+            默认
+            </summary>
+        </member>
+        <member name="F:picacomic.PicacomicUrl.sort.dd">
+            <summary>
+             新到旧
+            </summary>
+        </member>
+        <member name="F:picacomic.PicacomicUrl.sort.da">
+            <summary>
+            旧到新
+            </summary>
+        </member>
+        <member name="F:picacomic.PicacomicUrl.sort.ld">
+            <summary>
+            爱心最多
+            </summary>
+        </member>
+        <member name="F:picacomic.PicacomicUrl.sort.vd">
+            <summary>
+            绅士指数最多
+            </summary>
+        </member>
+        <member name="T:picacomic.PicacomicUrl.gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="T:picacomic.PicacomicUrl.tt">
+            <summary>
+            排行榜分类
+            </summary>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetChannelIp">
+            <summary>
+            获取线路ip
+            WebClient.DownloadString(url);            
+            {"status":"ok","addresses":["104.20.180.50","104.20.181.50"],"waka":"https://ad-channel.wikawika.xyz","adKeyword":"wikawika"}
+            </summary>      
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Login(System.String,System.String)">
+            <summary>
+            登录
+            </summary>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Register(System.String,System.String,System.String,System.String,picacomic.PicacomicUrl.gender,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            注册
+            </summary>       
+            <param name="birthday">yyyy/mm/dd</param>       
+            
+            <param name="question1">问题1</param>
+            <param name="answer1">答案1</param>       
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Profile(System.String)">
+            <summary>
+            个人资料
+            </summary>
+            <param name="id">传入_id时则查询对应_id,不传时则查询自己</param>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Punch">
+            <summary>
+            签到
+            </summary>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetChat">
+            <summary>
+            聊天室
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetMyComments(System.Int32)">
+            <summary>
+            我的评论
+            </summary>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetPlatform">
+            <summary>
+            获取App基本信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetCategory">
+            <summary>
+            获取app主页上几大目录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Favourite(picacomic.PicacomicUrl.sort,System.Int32)">
+            <summary>
+            获取收藏
+            </summary>
+            <param name="page"></param>        
+        </member>
+        <member name="M:picacomic.PicacomicUrl.AddFavourite(System.String)">
+            <summary>
+            添加收藏
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.CategoriesSearch(System.String,System.Int32,picacomic.PicacomicUrl.sort)">
+            <summary>
+            分类搜索
+            </summary>
+            <param name="page"></param>
+            <param name="categories">本子标签</param>
+            <param name="sort">排序  </param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.AdvancedSearch(System.String,System.Int32,picacomic.PicacomicUrl.sort)">
+            <summary>
+            关键词搜索
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="sort"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Search(System.String,System.Int32)">
+            <summary>
+            普通搜索
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Rank(picacomic.PicacomicUrl.tt)">
+            <summary>
+            排行榜
+            </summary>
+            <param name="day"> H24  D7  D30</param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetComicsBook(System.String)">
+            <summary>
+            通过bookId查找一本书
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.Recommendation(System.String)">
+            <summary>
+            看了這本子的人也在看
+            暂时无数据
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetComicsBookEps(System.String,System.Int32)">
+            <summary>
+            获取本子的章节信息
+            </summary>
+            <param name="bookId"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetComicsBookOrder(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取本子里某一章节里某一页的所有图片信息
+            </summary>
+            <param name="bookId"></param>
+            <param name="epsId">查看上面那个函数 </param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetKeywords">
+            <summary>
+            获取热词
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetRandom">
+            <summary>
+            随机一个本子
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetCollections">
+            <summary>
+            本子神推荐
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.EverybodyLoves(System.Int32)">
+            <summary>
+            大家都在看
+            </summary>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.DownloadBook(System.String,System.String)">
+            <summary>
+            下载一个图片
+            图片信息里包含里此两个参数
+            构建一个url,自己实现
+            </summary>
+            <param name="fileServer"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetComments(System.String,System.Int32)">
+            <summary>
+            获取某个本子的评论
+            </summary>
+            <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.GetCommentsChildren(System.String,System.Int32)">
+            <summary>
+            查看子评论
+            </summary>
+            <param name="comentId"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.LikeComment(System.String)">
+            <summary>
+            点赞某个评论
+            对已经点赞过的发送会取消点赞
+            可通过评论里isLiked字段进行判断
+            返回的数据里["data"]["action"]也会告诉是点赞还是取消        
+            </summary>
+            <param name="comentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.SendComment(System.String,System.String)">
+            <summary>
+            发送评论
+            </summary>
+            <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
+            <param name="content">评论内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:picacomic.PicacomicUrl.SendCommentChild(System.String,System.String)">
+            <summary>
+            发送子评论
+            </summary>
+            <param name="comentId"></param>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="T:picacomic.Http.Response.Login">
+            <summary>
+            登录
+            </summary>
+        </member>
+        <member name="T:picacomic.Http.Response.Recommendation">
+            <summary>
+            TODO:接口暂时没找到数据 备用
+            </summary>
+        </member>
+        <member name="T:picacomic.Http.Response.Register">
+            <summary>
+            不出错就是成功！
+            </summary>
+        </member>
+        <member name="T:picacomic.Http.Response.ResponseBase`1">
+            <summary>
+            接口返回的数据
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:picacomic.Http.Response.SendComment">
+            <summary>
+            不出错就是成功
+            </summary>
+        </member>
+    </members>
+</doc>
