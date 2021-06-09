@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "picacomic-api", "picacomic-api.csproj", "{1DB892E8-4566-4271-B019-E26D923487DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "picacomic", "picacomic\picacomic.csproj", "{78219F86-8434-4230-A42C-9802DAC48760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "picacomic-test", "picacomic-test\picacomic-test.csproj", "{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DB892E8-4566-4271-B019-E26D923487DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DB892E8-4566-4271-B019-E26D923487DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DB892E8-4566-4271-B019-E26D923487DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DB892E8-4566-4271-B019-E26D923487DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78219F86-8434-4230-A42C-9802DAC48760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78219F86-8434-4230-A42C-9802DAC48760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78219F86-8434-4230-A42C-9802DAC48760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78219F86-8434-4230-A42C-9802DAC48760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8AA6C0CA-447A-4ABB-AFD7-1EB456452920}
+		SolutionGuid = {4E84F713-B76C-4A27-9795-A9C49CE946F7}
 	EndGlobalSection
 EndGlobal
