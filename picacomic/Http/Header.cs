@@ -30,7 +30,7 @@ namespace picacomic
 
 
 
-        public static readonly string baseUrl = "https://picaapi.picacomic.com/";
+        internal static readonly string baseUrl = "https://picaapi.picacomic.com/";
 
         private readonly string api_key = "C69BAF41DA5ABD1FFEDC6D2FEA56B";
 
@@ -132,12 +132,12 @@ namespace picacomic
 
         }
 
-        public string GetUrl()
+        internal string GetUrl()
         {
             return Url;
         }
 
-        public string GetParam()
+        internal string GetParam()
         {
             return param;
         }
@@ -154,7 +154,7 @@ namespace picacomic
 
 
 
-        public Dictionary<string, string> GetHeader()
+        internal Dictionary<string, string> GetHeader()
         {
             string time = timestamp;
             string _nonce = nonce;

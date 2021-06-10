@@ -9,7 +9,7 @@ namespace picacomic
     /// <summary>
     /// 只是对HttpClient的一个简单的封装
     /// </summary>
-    public class HttpWeb
+    internal class HttpWeb
     {
         private static HttpClient httpClient = new()
         {
@@ -17,10 +17,8 @@ namespace picacomic
             Timeout = new TimeSpan(0, 0, 5)
         };
 
-        private static HttpClient httpClientDownload = new() { Timeout = new TimeSpan(0, 0, 10) };
 
-
-        public static async Task <T> SendAsync<T>(Header header)
+        internal static async Task<T> SendAsync<T>(Header header)
         {
             string url = header.GetUrl();
             var dic = header.GetHeader();
@@ -52,7 +50,7 @@ namespace picacomic
             else
             {
                 throw new Exception($"URL: {header.GetUrl()} \n 错误信息：{Data.Message} \n {Data.Detail}");
-            }            
-        }       
+            }
+        }
     }
 }
