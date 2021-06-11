@@ -20,12 +20,9 @@
  
 ### 示例
  ```
-  var login = await PicacomicUrl.Login("username", "password");
-  if (login != null)
-  {
-     //这个token有使用时长,不建议长期保存,可以运行程序时登录一次
-     Header.SetAuthorization(login.Authorization);
-  } 
+  var login = await PicacomicUrl.Login("username", "password");  
+  //这个token有使用时长,不建议长期保存,可以运行程序时登录一次
+  Header.SetAuthorization(login.Authorization);
  ```
  
  
