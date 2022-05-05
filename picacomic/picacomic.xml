@@ -278,7 +278,7 @@
             <summary>
             查看子评论
             </summary>
-            <param name="comentId"></param>
+            <param name="commentId"></param>
             <param name="page"></param>
             <returns></returns>
         </member>
@@ -289,7 +289,7 @@
             可通过评论里isLiked字段进行判断
             返回的数据里["data"]["action"]也会告诉是点赞还是取消        
             </summary>
-            <param name="comentId"></param>
+            <param name="commentId"></param>
             <returns></returns>
         </member>
         <member name="M:picacomic.PicacomicUrl.SendComment(System.String,System.String)">
@@ -304,7 +304,7 @@
             <summary>
             发送子评论
             </summary>
-            <param name="comentId"></param>
+            <param name="commentId"></param>
             <param name="content"></param>
             <returns></returns>
         </member>

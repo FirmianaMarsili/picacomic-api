@@ -7,15 +7,11 @@ using System.Threading.Tasks;
 namespace picacomic
 {
     /// <summary>   
-    /// 
-    /// Api
-    /// 
-    /// 特别注意的是 如果返回的json里只有code = 200,message = "success"  说明此次后台未进行正确处理 ，大致原因有 method错误，param出错，格式不对、未urlencode、错误的urlencode等等，header错误等等   
-    /// 
-    /// 哔咔一般都是以40的数量为一页   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
-    /// 
+    /// <para>特别注意的是如果返回的json里只有 {code = 200,message = "success"} 说明此次后台未进行正确处理</para>
+    /// <para>大致原因有：method错误、param出错、格式不对、URL编码错误、header错误等等</para>
+    /// <para>哔咔一般都是以40的数量为一页，例：1-40张图片为一页，1-40章节为一页</para>
+    /// <para>如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量</para>
     /// </summary>
-
     public class PicacomicUrl
     {
         #region Function-Ex
@@ -29,18 +25,22 @@ namespace picacomic
             /// 默认
             /// </summary>
             ua,
+
             /// <summary>
             ///  新到旧
             /// </summary>
             dd,
+
             /// <summary>
             /// 旧到新
             /// </summary>
             da,
+
             /// <summary>
             /// 爱心最多
             /// </summary>
             ld,
+
             /// <summary>
             /// 绅士指数最多
             /// </summary>
@@ -87,12 +87,14 @@ namespace picacomic
                     sb.Append(c);
                 }
             }
+
             return sb.ToString();
         }
+
         #endregion
 
 
-        #region  IP
+        #region IP
 
         /// <summary>
         /// 获取线路ip
@@ -104,9 +106,8 @@ namespace picacomic
             string url = "http://68.183.234.72/init";
             return url;
         }
+
         #endregion
-
-
 
 
         #region USER
@@ -142,7 +143,7 @@ namespace picacomic
             string password,
             string name,
             string birthday, //yyyy/mm/dd
-            gender gender,   // m,f,bot
+            gender gender, // m,f,bot
             string question1,
             string answer1,
             string question2,
@@ -218,11 +219,10 @@ namespace picacomic
             return await HttpWeb.SendAsync<GetMyComments>(header);
         }
 
-
         #endregion
 
 
-        #region Book 
+        #region Book
 
         /// <summary>
         /// 获取App基本信息
@@ -275,7 +275,8 @@ namespace picacomic
         /// <param name="categories">本子标签</param>
         /// <param name="sort">排序  </param>
         /// <returns></returns>
-        public static async Task<CategoriesSearch> CategoriesSearch(string categories, int page = 1, sort sort = sort.ua)
+        public static async Task<CategoriesSearch> CategoriesSearch(string categories, int page = 1,
+            sort sort = sort.ua)
         {
             Header header = new(url: $"comics?page={page.ToString()}&c={UrlEncode(categories)}&s={sort.ToString()}");
             return await HttpWeb.SendAsync<CategoriesSearch>(header);
@@ -411,7 +412,8 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<EverybodyLoves> EverybodyLoves(int page = 1)
         {
-            Header header = new(url: $"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
+            Header header =
+                new(url: $"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
             return await HttpWeb.SendAsync<EverybodyLoves>(header);
         }
 
@@ -436,7 +438,7 @@ namespace picacomic
         /// <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetComments> GetComments(string bookId = "5822a6e3ad7ede654696e482" , int page = 1)
+        public static async Task<GetComments> GetComments(string bookId = "5822a6e3ad7ede654696e482", int page = 1)
         {
             Header header = new(url: $"comics/{bookId}/comments?page={page.ToString()}");
             return await HttpWeb.SendAsync<GetComments>(header);
@@ -445,12 +447,12 @@ namespace picacomic
         /// <summary>
         /// 查看子评论
         /// </summary>
-        /// <param name="comentId"></param>
+        /// <param name="commentId"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetCommentsChildren> GetCommentsChildren(string comentId, int page = 1)
+        public static async Task<GetCommentsChildren> GetCommentsChildren(string commentId, int page = 1)
         {
-            Header header = new(url: $"comments/{comentId}/childrens?page={page.ToString()}");
+            Header header = new(url: $"comments/{commentId}/childrens?page={page.ToString()}");
             return await HttpWeb.SendAsync<GetCommentsChildren>(header);
         }
 
@@ -460,12 +462,12 @@ namespace picacomic
         /// 可通过评论里isLiked字段进行判断
         /// 返回的数据里["data"]["action"]也会告诉是点赞还是取消        
         /// </summary>
-        /// <param name="comentId"></param>
+        /// <param name="commentId"></param>
         /// <returns></returns>
-        public static async Task<LikeComment> LikeComment(string comentId)
+        public static async Task<LikeComment> LikeComment(string commentId)
         {
             Header header = new(
-                url: $"comments/{comentId}/like",
+                url: $"comments/{commentId}/like",
                 method: HttpMethod.POST);
             return await HttpWeb.SendAsync<LikeComment>(header);
         }
@@ -494,10 +496,10 @@ namespace picacomic
         /// <summary>
         /// 发送子评论
         /// </summary>
-        /// <param name="comentId"></param>
+        /// <param name="commentId"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public static async Task<SendComment> SendCommentChild(string comentId, string content)
+        public static async Task<SendComment> SendCommentChild(string commentId, string content)
         {
             JObject jd = new()
             {
@@ -505,13 +507,12 @@ namespace picacomic
             };
 
             Header header = new(
-                url: $"comments/{comentId}",
+                url: $"comments/{commentId}",
                 method: HttpMethod.POST,
                 param: jd.ToString());
             return await HttpWeb.SendAsync<SendComment>(header);
         }
 
         #endregion
-
     }
 }
