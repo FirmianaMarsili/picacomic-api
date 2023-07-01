@@ -1,28 +1,26 @@
 # picacomic-api
-- vs2019
-- .net5.0
-- 因为post方式使用了HttpClient,在不改变post方式之前最多支持.net4.5
-- nuget只编译了5.0,可以下载源码自行编译4.5+
+- .net6.0
  
 ## 如何使用
 
  - **[NuGet](https://www.nuget.org/packages/picacomic/)** 
  
- - **所有api都在`picacomic.PicacomicUrl`,在调用`picacomic.Header.SetAuthorization("");`保存好token以后就可以使用所有api**
+ - **所有api都在[Picacomic.PicAcgReq](https://github.com/FirmianaMarsili/picacomic-api/blob/c58b3c2d47e48caa0205fac578992251913888c4/picacomic/Http/PicAcgReq.cs#L125),登陆成功以后调用[Picacomic.Header.SetAuthorization("");](https://github.com/FirmianaMarsili/picacomic-api/blob/c58b3c2d47e48caa0205fac578992251913888c4/picacomic/Http/Header.cs#L167)保存好token以后就可以使用所有api**
  
- - **所有返回的数据已经解析好对应类返回,错误信息会以异常抛出.**
+ - **所有返回的数据已经解析好对应类返回,错误信息会以[异常](https://github.com/FirmianaMarsili/picacomic-api/blob/c58b3c2d47e48caa0205fac578992251913888c4/picacomic/Http/HttpWeb.cs#L42)抛出.**
  
  - **个别几个api会返回空的类,没有数据供解析,没有异常就是正常post**
- 
- - **未实现接口`Recommendation`的数据解析,一直返回的数据都是空的,大概接口目前不可用?**
- 
- - **未实现下载图片接口,只提供图片下载地址的拼接函数`public static string DownloadBook(string fileServer, string path)`**
+   
+ - **返回的数据绝大多数都已添加注释。~~不然自己隔两年用都要想一下~~** 
  
 ### 示例
  ```
-  var login = await PicacomicUrl.Login("username", "password");  
-  //这个token有使用时长,不建议长期保存,可以运行程序时登录一次
+  //登录
+  var login = await PicAcgReq.Login("username","password");
+  //设置token，这个token有使用时长,不建议长期保存,可以运行程序时登录一次
   Header.SetAuthorization(login.Authorization);
+  //获取热词
+  Console.WriteLine( string.Join('\n', PicAcgReq.GetKeywords().Result.Keyword));
  ```
  
  
