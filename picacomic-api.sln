@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "picacomic", "picacomic\picacomic.csproj", "{78219F86-8434-4230-A42C-9802DAC48760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Picacomic", "picacomic\Picacomic.csproj", "{78219F86-8434-4230-A42C-9802DAC48760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "picacomic-test", "picacomic-test\picacomic-test.csproj", "{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Picacomic-test", "picacomic-test\Picacomic-test.csproj", "{3AFDEB50-B53D-4615-BE6F-3296D19B31D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

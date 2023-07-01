@@ -2,8 +2,11 @@
 
 using Newtonsoft.Json;
 
-namespace picacomic.Http.Response
+namespace Picacomic.Http.Response
 {
+    /// <summary>
+    /// 个人资料
+    /// </summary>
     public class Profile
     {
         [JsonProperty("user")]

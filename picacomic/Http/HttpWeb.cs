@@ -1,10 +1,10 @@
-﻿using picacomic.Http.Response;
+﻿using Picacomic.Http.Response;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic
+namespace Picacomic
 {
     /// <summary>
     /// 只是对HttpClient的一个简单的封装
@@ -20,37 +20,26 @@ namespace picacomic
 
         internal static async Task<T> SendAsync<T>(Header header)
         {
-            string url = header.GetUrl();
+            string url = header.Url;
             var dic = header.GetHeader();
-            foreach (var item in dic)
+            HttpRequestMessage request = new HttpRequestMessage(header.Method, url);
+            foreach (var h in dic)
             {
-                if (httpClient.DefaultRequestHeaders.Contains(item.Key))
-                {
-                    httpClient.DefaultRequestHeaders.Remove(item.Key);
-                }
-                httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
+                request.Headers.Add(h.Key, h.Value);
             }
-            HttpResponseMessage response;
             if (header.MethodIsPost)
             {
-                var content = new StringContent(header.GetParam(), Encoding.UTF8, "application/json");
+                var content = new StringContent(header.Param, Encoding.UTF8, "application/json");
                 content.Headers.ContentType.CharSet = "UTF-8";
-                response = await httpClient.PostAsync(url, content);
-            }
-            else
-            {
-                response = await httpClient.GetAsync(url);
-            }
-            var responseString = await response.Content.ReadAsStringAsync();
+                request.Content = content;                
+            }            
+            var response = await httpClient.SendAsync(request);
+            var responseString = await response.Content.ReadAsStringAsync();           
             var Data = ResponseBase<T>.FromJson(responseString);
             if (Data.Success)
-            {
                 return Data.Data;
-            }
             else
-            {
-                throw new Exception($"URL: {header.GetUrl()} \n 错误信息：{Data.Message} \n {Data.Detail}");
-            }
+                throw new Exception($"URL: {header.Url} \n 错误信息：{Data.Message} \n {Data.Detail}");
         }
     }
 }

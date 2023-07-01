@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic.Http.Response
+namespace Picacomic.Http.Response
 {
+    /// <summary>
+    /// 点赞评论
+    /// </summary>
     public class LikeComment : AddFavourite
     {
     }

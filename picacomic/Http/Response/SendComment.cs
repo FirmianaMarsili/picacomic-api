@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic.Http.Response
+namespace Picacomic.Http.Response
 {
     /// <summary>
     /// 不出错就是成功

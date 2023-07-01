@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using Newtonsoft.Json;
+using Picacomic.Http.Request;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
-namespace picacomic
+namespace Picacomic
 
 {
-    public enum HttpMethod
-    {
-        POST,
-        GET
-    }
 
     /// <summary>
     /// 图片的质量
@@ -49,17 +48,20 @@ namespace picacomic
         private readonly string user_agent = "okhttp/3.8.1";
 
 
-        private ImageQuality image_quality;
+        private ImageQuality image_quality = ImageQuality.original;
 
 
-        private string Host;
+        private string host = "picaapi.picacomic.com";
 
         /// <summary>
         /// 线路
         /// </summary>
         private string channel = "1";
 
-        private string timestamp
+        /// <summary>
+        /// 此次连接发起的时间点，超过一定时间这次请求会被任务无效，Timezone 'Asia/Shanghai'
+        /// </summary>
+        private string Timestamp
         {
             get
             {
@@ -72,16 +74,34 @@ namespace picacomic
         /// 登录成功后所返回的token，长时间后会失效
         /// 需要重新登录
         /// 除登录以外都需要传入此token
+        /// 有效期好像是一周的样子
         /// </summary>
-        private static string authorization;
+        public static string Authorization { get; private set; }
 
-        private string Url;
 
-        private HttpMethod method;
-        public bool MethodIsPost
+        private string _url;
+
+        /// <summary>
+        /// 请求接口的完整连接
+        /// </summary>
+        public string Url
         {
-            get { return method == HttpMethod.POST; }
+            get => _url;
+            init => _url = baseUrl + value;
         }
+
+        private HttpMethod _method;
+        /// <summary>
+        /// 当前请求的方式
+        /// </summary>
+        public HttpMethod Method { 
+            get => _method;
+            init => _method = value;
+        }
+        /// <summary>
+        /// 如果是POST的时候，需要在Content处，显示设置charset
+        /// </summary>
+        public bool MethodIsPost => Method == HttpMethod.Post;
 
         /// <summary>
         /// POST时需要设置为"application/json; charset=UTF-8"
@@ -94,52 +114,49 @@ namespace picacomic
 
         private string accept_encoding;
 
-        private string param;
 
-
-
-
-
-        public Header(
-            string url,
-            ImageQuality imageQuality = ImageQuality.original,
-            string Host = null,
-            string authorization = null,
-            HttpMethod method = HttpMethod.GET,
-            string content_type = null,
-            string connection = null,
-            string accept_encoding = null,
-            string param = "")
+        private string _param;
+        /// <summary>
+        /// POST DATA
+        /// </summary>
+        public string Param
         {
-            this.Url = baseUrl + url;
-
-            this.image_quality = imageQuality;
-
-
-            this.Host = Host;
-
-            this.method = method;
-
-            this.content_type = content_type;
-
-
-            this.connection = connection;
-
-            this.accept_encoding = accept_encoding;
-
-            this.param = param;
-
-
+            get => _param;
+            init => _param = value;
         }
 
-        internal string GetUrl()
+
+
+        public Header(string url)
         {
-            return Url;
+            Url = url;
+            Method = HttpMethod.Get;
         }
 
-        internal string GetParam()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="param">可为null</param>
+        public Header(string url, RequestFormat param)
         {
-            return param;
+            Url = url;
+            Method = HttpMethod.Post;
+            Param = param != null ? param.Format() : "";
+        }
+
+
+
+        public Header(string url, HttpMethod _method, ImageQuality _imageQuality = ImageQuality.original, string _host = null, string _authorization = null, string _content_type = null, string _connection = null, string _accept_encoding = null, RequestFormat _param = null)
+        {
+            Url = url;
+            Method = _method;
+            image_quality = _imageQuality;
+            host = _host;            
+            content_type = _content_type;
+            connection = _connection;
+            accept_encoding = _accept_encoding;
+            Param = _param == null ? "" : _param.Format();
         }
 
         /// <summary>
@@ -149,23 +166,18 @@ namespace picacomic
         /// <param name="token"></param>
         public static void SetAuthorization(string token)
         {
-            authorization = token;
+            Authorization = token;
         }
-
-
 
         internal Dictionary<string, string> GetHeader()
         {
-            string time = timestamp;
+            string time = Timestamp;
             string _nonce = nonce;
             Dictionary<string, string> dic = new()
             {
                 ["api-key"] = api_key,
-
                 ["accept"] = accept,
-
                 ["signature"] = GetSignature(time, _nonce),
-
                 ["app-channel"] = channel,
                 ["time"] = time,
                 ["app-version"] = version,
@@ -175,30 +187,20 @@ namespace picacomic
                 ["app-platform"] = platform,
                 ["app-uuid"] = app_uuid,
                 ["user-Agent"] = user_agent,
-                ["Host"] = "picaapi.picacomic.com",
+                ["Host"] = host,
                 ["image-quality"] = image_quality.ToString(),
             };
-            if (authorization != null)
-            {
-                dic["authorization"] = authorization;
-            }
-            if (content_type != null)
-            {
-                dic["Content-Type"] = content_type;
-            }
-            if (Host != null)
-            {
-                dic["Host"] = Host;
-            }
-            if (accept_encoding != null)
-            {
-                dic["Accept-Encoding"] = accept_encoding;
-            }
-            if (connection != null)
-            {
-                dic["Connection"] = connection;
-            }
+            if (!string.IsNullOrEmpty(Authorization))
+                dic["authorization"] = Authorization;
 
+
+            //这几个其实应该已经用不到
+            if (!string.IsNullOrEmpty(content_type))
+                dic["Content-Type"] = content_type;
+            if (!string.IsNullOrEmpty(accept_encoding))
+                dic["Accept-Encoding"] = accept_encoding;
+            if (!string.IsNullOrEmpty(connection))
+                dic["Connection"] = connection;
             return dic;
         }
 
@@ -221,12 +223,11 @@ namespace picacomic
                Url.Replace(baseUrl,string.Empty),
                time,
                nonce,
-               method.ToString(),
+               Method.ToString(),
                api_key,
                version,
                build_version
             };
-
             string src_data = Signature_data(data);
             string src_key = Signature_key();
 
@@ -236,9 +237,17 @@ namespace picacomic
 
 
         }
-
+     
+        /// <summary>
+        /// 这个key在当前版本中是固定的。所以可以直接返回的
+        /// </summary>
+        /// <returns></returns>
         private string Signature_key()
         {
+            return "~d}$Q7$eIni=V)9\\RK/P.RM4;9[7|@/CA}b~OW!3?EV`:<>M7pddUBL5n|0/*Cn";
+
+            //下面是key的生成过程
+
             char[] sign = "~*}$#,$-\").=$)\",,#/-.'%(;$[,|@/&(#\"~%*!-?*\"-:*!!*,$\"%.&'*|%/*,*".ToCharArray();
             List<string> array = new List<string>();
             for (int i = 0; i < sign.Length; i++)

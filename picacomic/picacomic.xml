@@ -4,218 +4,280 @@
         <name>picacomic</name>
     </assembly>
     <members>
-        <member name="T:picacomic.ImageQuality">
+        <member name="T:Picacomic.ImageQuality">
             <summary>
             图片的质量
             </summary>
         </member>
-        <member name="T:picacomic.Header">
+        <member name="T:Picacomic.Header">
             <summary>
             构建所有在访问里需要的header
             </summary>
         </member>
-        <member name="F:picacomic.Header.channel">
+        <member name="F:Picacomic.Header.channel">
             <summary>
             线路
             </summary>
         </member>
-        <member name="F:picacomic.Header.authorization">
+        <member name="P:Picacomic.Header.Timestamp">
+            <summary>
+            此次连接发起的时间点，超过一定时间这次请求会被任务无效，Timezone 'Asia/Shanghai'
+            </summary>
+        </member>
+        <member name="P:Picacomic.Header.Authorization">
             <summary>
             登录成功后所返回的token，长时间后会失效
             需要重新登录
             除登录以外都需要传入此token
+            有效期好像是一周的样子
             </summary>
         </member>
-        <member name="F:picacomic.Header.content_type">
+        <member name="P:Picacomic.Header.Url">
+            <summary>
+            请求接口的完整连接
+            </summary>
+        </member>
+        <member name="P:Picacomic.Header.Method">
+            <summary>
+            当前请求的方式
+            </summary>
+        </member>
+        <member name="P:Picacomic.Header.MethodIsPost">
+            <summary>
+            如果是POST的时候，需要在Content处，显示设置charset
+            </summary>
+        </member>
+        <member name="F:Picacomic.Header.content_type">
             <summary>
             POST时需要设置为"application/json; charset=UTF-8"
             因HttpClient规则所限，此值可以不用理会，已在所有Post时添加
             原因参考于"https://github.com/dotnet/runtime/issues/17036#issuecomment-212023809"
             </summary>
         </member>
-        <member name="M:picacomic.Header.SetAuthorization(System.String)">
+        <member name="P:Picacomic.Header.Param">
+            <summary>
+            POST DATA
+            </summary>
+        </member>
+        <member name="M:Picacomic.Header.#ctor(System.String,Picacomic.Http.Request.RequestFormat)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <param name="param">可为null</param>
+        </member>
+        <member name="M:Picacomic.Header.SetAuthorization(System.String)">
             <summary>
             设置token
             Token有时限，在数据返回无效token时就需要重新登录
             </summary>
             <param name="token"></param>
         </member>
-        <member name="T:picacomic.HttpWeb">
+        <member name="M:Picacomic.Header.Signature_key">
+            <summary>
+            这个key在当前版本中是固定的。所以可以直接返回的
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Picacomic.HttpWeb">
             <summary>
             只是对HttpClient的一个简单的封装
             </summary>
         </member>
-        <member name="T:picacomic.PicacomicUrl">
+        <member name="T:Picacomic.PicAcgReq">
             <summary>   
-            
-            Api
-            
-            特别注意的是 如果返回的json里只有code = 200,message = "success"  说明此次后台未进行正确处理 ，大致原因有 method错误，param出错，格式不对、未urlencode、错误的urlencode等等，header错误等等   
-            
-            哔咔一般都是以40的数量为一页   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
-            
+            哔咔一般都是以40为基准   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
             </summary>
         </member>
-        <member name="T:picacomic.PicacomicUrl.sort">
+        <member name="T:Picacomic.PicAcgReq.Sort">
             <summary>
             排序规则
             </summary>
         </member>
-        <member name="F:picacomic.PicacomicUrl.sort.ua">
+        <member name="F:Picacomic.PicAcgReq.Sort.ua">
             <summary>
             默认
             </summary>
         </member>
-        <member name="F:picacomic.PicacomicUrl.sort.dd">
+        <member name="F:Picacomic.PicAcgReq.Sort.dd">
             <summary>
              新到旧
             </summary>
         </member>
-        <member name="F:picacomic.PicacomicUrl.sort.da">
+        <member name="F:Picacomic.PicAcgReq.Sort.da">
             <summary>
             旧到新
             </summary>
         </member>
-        <member name="F:picacomic.PicacomicUrl.sort.ld">
+        <member name="F:Picacomic.PicAcgReq.Sort.ld">
             <summary>
             爱心最多
             </summary>
         </member>
-        <member name="F:picacomic.PicacomicUrl.sort.vd">
+        <member name="F:Picacomic.PicAcgReq.Sort.vd">
             <summary>
             绅士指数最多
             </summary>
         </member>
-        <member name="T:picacomic.PicacomicUrl.gender">
+        <member name="T:Picacomic.PicAcgReq.Gender">
             <summary>
             性别
             </summary>
         </member>
-        <member name="T:picacomic.PicacomicUrl.tt">
+        <member name="T:Picacomic.PicAcgReq.TT">
             <summary>
             排行榜分类
             </summary>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetChannelIp">
+        <member name="F:Picacomic.PicAcgReq.TT.H24">
+            <summary>
+            今日
+            </summary>
+        </member>
+        <member name="F:Picacomic.PicAcgReq.TT.D7">
+            <summary>
+            本周
+            </summary>
+        </member>
+        <member name="F:Picacomic.PicAcgReq.TT.D30">
+            <summary>
+            本月
+            </summary>
+        </member>
+        <member name="M:Picacomic.PicAcgReq.UrlEncode(System.String)">
+            <summary>
+            如果注册账号或者登陆时，账号是邮箱格式，这里应该特别处理一下@
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Picacomic.PicAcgReq.GetChannelIp">
             <summary>
             获取线路ip
             WebClient.DownloadString(url);            
             {"status":"ok","addresses":["104.20.180.50","104.20.181.50"],"waka":"https://ad-channel.wikawika.xyz","adKeyword":"wikawika"}
             </summary>      
         </member>
-        <member name="M:picacomic.PicacomicUrl.Login(System.String,System.String)">
+        <member name="M:Picacomic.PicAcgReq.Login(System.String,System.String)">
             <summary>
             登录
             </summary>
         </member>
-        <member name="M:picacomic.PicacomicUrl.Register(System.String,System.String,System.String,System.String,picacomic.PicacomicUrl.gender,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Picacomic.PicAcgReq.Register(System.String,System.String,System.String,System.DateTimeOffset,Picacomic.PicAcgReq.Gender,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             注册
-            </summary>       
-            <param name="birthday">yyyy/mm/dd</param>       
-            
+            </summary>
+            <param name="email">账号</param>
+            <param name="password">密码</param>
+            <param name="name">昵称</param>
+            <param name="birthday">生日  格式为：//yyyy/MM/dd</param>
+            <param name="gender">性别</param>
             <param name="question1">问题1</param>
-            <param name="answer1">答案1</param>       
+            <param name="answer1">答案1</param>
+            <param name="question2"></param>
+            <param name="answer2"></param>
+            <param name="question3"></param>
+            <param name="answer3"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.Profile(System.String)">
+        <member name="M:Picacomic.PicAcgReq.Profile(System.String)">
             <summary>
             个人资料
             </summary>
             <param name="id">传入_id时则查询对应_id,不传时则查询自己</param>
         </member>
-        <member name="M:picacomic.PicacomicUrl.Punch">
+        <member name="M:Picacomic.PicAcgReq.Punch">
             <summary>
             签到
             </summary>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetChat">
+        <member name="M:Picacomic.PicAcgReq.GetChat">
             <summary>
             聊天室
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetMyComments(System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.GetMyComments(System.Int32)">
             <summary>
             我的评论
             </summary>
             <param name="page"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetPlatform">
+        <member name="M:Picacomic.PicAcgReq.GetPlatform">
             <summary>
             获取App基本信息
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetCategory">
+        <member name="M:Picacomic.PicAcgReq.GetCategory">
             <summary>
-            获取app主页上几大目录
+            获取app主页上几大分类
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.Favourite(picacomic.PicacomicUrl.sort,System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.CategoriesSearch(System.String,System.Int32,Picacomic.PicAcgReq.Sort)">
+            <summary>
+            通过分类搜索
+            </summary>
+            <param name="page"></param>
+            <param name="categories">本子分类</param>
+            <param name="sort">排序  </param>
+            <returns></returns>
+        </member>
+        <member name="M:Picacomic.PicAcgReq.AdvancedSearch(System.String,System.Int32,Picacomic.PicAcgReq.Sort)">
+            <summary>
+            关键词搜索
+            </summary>
+            <param name="keyword">关键字或者标签</param>
+            <param name="page"></param>
+            <param name="sort"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Picacomic.PicAcgReq.Search(System.String,System.Int32)">
+            <summary>
+            普通搜索
+            一般app在不切换排序时是使用的这个接口
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Picacomic.PicAcgReq.Favourite(Picacomic.PicAcgReq.Sort,System.Int32)">
             <summary>
             获取收藏
             </summary>
             <param name="page"></param>        
         </member>
-        <member name="M:picacomic.PicacomicUrl.AddFavourite(System.String)">
+        <member name="M:Picacomic.PicAcgReq.AddFavourite(System.String)">
             <summary>
             添加收藏
             </summary>
             <param name="bookId"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.CategoriesSearch(System.String,System.Int32,picacomic.PicacomicUrl.sort)">
-            <summary>
-            分类搜索
-            </summary>
-            <param name="page"></param>
-            <param name="categories">本子标签</param>
-            <param name="sort">排序  </param>
-            <returns></returns>
-        </member>
-        <member name="M:picacomic.PicacomicUrl.AdvancedSearch(System.String,System.Int32,picacomic.PicacomicUrl.sort)">
-            <summary>
-            关键词搜索
-            </summary>
-            <param name="keyword"></param>
-            <param name="page"></param>
-            <param name="sort"></param>
-            <returns></returns>
-        </member>
-        <member name="M:picacomic.PicacomicUrl.Search(System.String,System.Int32)">
-            <summary>
-            普通搜索
-            </summary>
-            <param name="keyword"></param>
-            <param name="page"></param>
-            <returns></returns>
-        </member>
-        <member name="M:picacomic.PicacomicUrl.Rank(picacomic.PicacomicUrl.tt)">
+        <member name="M:Picacomic.PicAcgReq.Rank(Picacomic.PicAcgReq.TT)">
             <summary>
             排行榜
             </summary>
             <param name="day"> H24  D7  D30</param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetComicsBook(System.String)">
+        <member name="M:Picacomic.PicAcgReq.GetComicsBook(System.String)">
             <summary>
             通过bookId查找一本书
             </summary>
             <param name="bookId"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.Recommendation(System.String)">
+        <member name="M:Picacomic.PicAcgReq.Recommendation(System.String)">
             <summary>
             看了這本子的人也在看
-            暂时无数据
             </summary>
             <param name="bookId"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetComicsBookEps(System.String,System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.GetComicsBookEps(System.String,System.Int32)">
             <summary>
             获取本子的章节信息
             </summary>
@@ -223,7 +285,7 @@
             <param name="page"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetComicsBookOrder(System.String,System.Int32,System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.GetComicsBookOrder(System.String,System.Int32,System.Int32)">
             <summary>
             获取本子里某一章节里某一页的所有图片信息
             </summary>
@@ -231,42 +293,32 @@
             <param name="epsId">查看上面那个函数 </param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetKeywords">
+        <member name="M:Picacomic.PicAcgReq.GetKeywords">
             <summary>
             获取热词
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetRandom">
+        <member name="M:Picacomic.PicAcgReq.GetRandom">
             <summary>
             随机一个本子
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetCollections">
+        <member name="M:Picacomic.PicAcgReq.GetCollections">
             <summary>
             本子神推荐
             </summary>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.EverybodyLoves(System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.EverybodyLoves(System.Int32)">
             <summary>
             大家都在看
             </summary>
             <param name="page"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.DownloadBook(System.String,System.String)">
-            <summary>
-            下载一个图片
-            图片信息里包含里此两个参数
-            构建一个url,自己实现
-            </summary>
-            <param name="fileServer"></param>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:picacomic.PicacomicUrl.GetComments(System.String,System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.GetComments(System.String,System.Int32)">
             <summary>
             获取某个本子的评论
             </summary>
@@ -274,7 +326,7 @@
             <param name="page"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.GetCommentsChildren(System.String,System.Int32)">
+        <member name="M:Picacomic.PicAcgReq.GetCommentsChildren(System.String,System.Int32)">
             <summary>
             查看子评论
             </summary>
@@ -282,7 +334,7 @@
             <param name="page"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.LikeComment(System.String)">
+        <member name="M:Picacomic.PicAcgReq.LikeComment(System.String)">
             <summary>
             点赞某个评论
             对已经点赞过的发送会取消点赞
@@ -292,7 +344,7 @@
             <param name="commentId"></param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.SendComment(System.String,System.String)">
+        <member name="M:Picacomic.PicAcgReq.SendComment(System.String,System.String)">
             <summary>
             发送评论
             </summary>
@@ -300,7 +352,7 @@
             <param name="content">评论内容</param>
             <returns></returns>
         </member>
-        <member name="M:picacomic.PicacomicUrl.SendCommentChild(System.String,System.String)">
+        <member name="M:Picacomic.PicAcgReq.SendCommentChild(System.String,System.String)">
             <summary>
             发送子评论
             </summary>
@@ -308,30 +360,1850 @@
             <param name="content"></param>
             <returns></returns>
         </member>
-        <member name="T:picacomic.Http.Response.Login">
+        <member name="M:Picacomic.PicAcgReq.GetFilePath(System.String,System.String)">
+            <summary>
+            拼接出图片下载地址
+            </summary>
+            <param name="fileServer"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Picacomic.Http.Request.AdvancedSearchReq">
+            <summary>
+            关键词搜索
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.AdvancedSearchReq.Keyword">
+            <summary>
+            关键字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.AdvancedSearchReq.Sort">
+            <summary>
+            排序规则
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Request.LoginReq">
+            <summary>
+            登陆
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Request.RegisterReq">
+            <summary>
+            注册
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Email">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Name">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Birthday">
+            <summary>
+            生日 格式为： yyyy/MM/dd
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Gender">
+            <summary>
+            性别   m,f,bot
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Question1">
+            <summary>
+            问题1
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Answer1">
+            <summary>
+            答案1
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Question2">
+            <summary>
+            问题2
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Answer2">
+            <summary>
+            答案2
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Question3">
+            <summary>
+            问题2
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.RegisterReq.Answer3">
+            <summary>
+            答案2
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Request.SendCommentReq">
+            <summary>
+            发送评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Request.SendCommentReq.Content">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.AddFavourite">
+            <summary>
+            添加收藏
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.AddFavourite.Action">
+            <summary>
+            收藏or取消
+            un_favourite
+            favourite
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.AddFavourite.Undo">
+            <summary>
+            取消收藏
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.AdvancedSearch">
+            <summary>
+            高级搜索
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.AdvancedSearch.Comics">
+            <summary>
+            搜索信息
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comics_AdvancedSearch">
+            <summary>
+            搜索信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_AdvancedSearch.Total">
+            <summary>
+            总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_AdvancedSearch.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_AdvancedSearch.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_AdvancedSearch.Docs">
+            <summary>
+            匹配漫画列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_AdvancedSearch.Limit">
+            <summary>
+            当前页最大显示数量
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_AdvancedSearch">
+            <summary>
+            匹配漫画
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.UpdatedAt">
+            <summary>
+            最后更新时间
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Thumb">
+            <summary>
+            封面信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Description">
+            <summary>
+            漫画简介
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.ChineseTeam">
+            <summary>
+            所属汉化组
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.CreatedAt">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Tags">
+            <summary>
+            文章标签
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_AdvancedSearch.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.CategoriesSearch">
+            <summary>
+            通过分类来搜索
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_CategoriesSearch.Docs">
+            <summary>
+            搜索结果
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_CategoriesSearch.Total">
+            <summary>
+            总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_CategoriesSearch.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_CategoriesSearch.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_CategoriesSearch.Pages">
+             <summary>
+            总页数
+             </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_CategoriesSearch">
+            <summary>
+            搜索结果，漫画列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.TotalLikes">
+            <summary>
+            总点赞
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.Thumb">
+            <summary>
+            封面图标信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.DocId">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CategoriesSearch.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Category">
+            <summary>
+            分类信息
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Categorie">
+            <summary>
+            分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Categorie.Title">
+            <summary>
+            类别名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Categorie.Thumb">
+            <summary>
+            分类封面信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Categorie.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Chat">
+            <summary>
+            获取聊天室
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Chat.ChatList">
+            <summary>
+            聊天室列表
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.ChatRes">
+            <summary>
+            聊天室
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ChatRes.Title">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ChatRes.Description">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ChatRes.Url">
+            <summary>
+            连接
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ChatRes.Avatar">
+            <summary>
+            封面
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Collections">
+            <summary>
+            本子神推荐
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Collection.Title">
+            <summary>
+            分类名字。如没意外，通常为"本子妹推薦"
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Collection.Comics">
+            <summary>
+            推荐列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.PagesCount">
+            <summary>
+            漫画总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.EpsCount">
+            <summary>
+            总章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Collections.Thumb">
+            <summary>
+            封面图片信息
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.ComicsBook">
+            <summary>
+            漫画信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Creator">
+            <summary>
+            投稿人的具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Description">
+            <summary>
+            简介
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Thumb">
+            <summary>
+            封面图片信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.ChineseTeam">
+            <summary>
+            所属汉化组
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Tags">
+            <summary>
+            文章标签
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.UpdatedAt">
+            <summary>
+            最后一次更新
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.CreatedAt">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.AllowDownload">
+            <summary>
+            开放下载
+            即使屏蔽了，你依旧可以通过章节查看每张图片的下载地址。然后通过地址去下载
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.AllowComment">
+            <summary>
+            开放评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.ViewsCount">
+            <summary>
+             绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.IsFavourite">
+            <summary>
+            是否已经收藏
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.IsLiked">
+            <summary>
+            是否已经点赞
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_ComicsBook.CommentsCount">
+            <summary>
+            评论数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Creator">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Id">
+            <summary>
+            投稿人id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Name">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Title">
+            <summary>
+            称号
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Verified">
+            <summary>
+            实名认证
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Exp">
+            <summary>
+            经验
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Characters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Role">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Slogan">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Creator.Character">
+            <summary>
+            头像遮罩
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.ComicsBookEps">
+            <summary>
+            获取漫画章节信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ComicsBookEps.Eps">
+            <summary>
+            章节信息
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Eps">
+            <summary>
+            章节信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Eps.Docs">
+            <summary>
+            章节列表，倒序。下标从1
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Eps.Total">
+            <summary>
+            总章节
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Eps.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Eps.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Eps.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_ComicsBookEps">
+            <summary>
+            章节具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookEps.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookEps.Title">
+            <summary>
+            章节名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookEps.Order">
+            <summary>
+            第几章
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookEps.DocId">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.ComicsBookOrder">
+            <summary>
+            章节内容
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ComicsBookOrder.Pages">
+            <summary>
+            章节内容具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.ComicsBookOrder.Ep">
+            <summary>
+            章节信息
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Ep">
+            <summary>
+            章节简略信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Ep.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Ep.Title">
+            <summary>
+            章节名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Pages.Docs">
+            <summary>
+            每张漫画的具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Pages.Total">
+            <summary>
+            当前章节中图片总数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Pages.Limit">
+            <summary>
+            当前页最大显示数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Pages.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Pages.PagesPages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_ComicsBookOrder">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookOrder.Id">
+            <summary>
+            图片id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookOrder.Media">
+            <summary>
+            图片的下载信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_ComicsBookOrder.DocId">
+            <summary>
+            图片id
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comments">
+            <summary>
+            获取某个本子的评论。或者是聊天室的评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments.Comment">
+            <summary>
+            评论列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments.TopComments">
+            <summary>
+            置顶评论列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments_GetComments.Total">
+            <summary>
+            总评论数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments_GetComments.Limit">
+            <summary>
+            当前页最大显示数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments_GetComments.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comments_GetComments.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_GetComments">
+            <summary>
+            评论的具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.Id">
+            <summary>
+            当前评论的id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.Content">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.User">
+            <summary>
+            评论的具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.Comic">
+            <summary>
+            评论所在的漫画或者聊天室的id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.IsTop">
+            <summary>
+            置顶
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.Hide">
+            <summary>
+            隐藏
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.CreatedAt">
+            <summary>
+            发表日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.DocId">
+            <summary>
+            当前评论的id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.LikesCount">
+            <summary>
+            点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.CommentsCount">
+            <summary>
+            子评论数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_GetComments.IsLiked">
+            <summary>
+            是否已经点赞
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.User_GetComments">
+            <summary>
+            评论人的个人资料
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Id">
+            <summary>
+            用户id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Name">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Title">
+            <summary>
+            称号？
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Verified">
+            <summary>
+            实名认证？
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Exp">
+            <summary>
+            经验
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Slogan">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User_GetComments.Character">
+            <summary>
+            头像遮罩
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.TopComment">
+            <summary>
+            置顶评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.Id">
+            <summary>
+            评论id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.Content">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.User">
+            <summary>
+            评论人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.Comic">
+            <summary>
+            所属漫画或者聊天室的id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.IsTop">
+            <summary>
+            置顶
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.Hide">
+            <summary>
+            隐藏
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.CreatedAt">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.LikesCount">
+            <summary>
+            点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.CommentsCount">
+            <summary>
+            子评论数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.TopComment.IsLiked">
+            <summary>
+            是否点赞
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.CommentsChildren">
+            <summary>
+            获取子评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_CommentsChildren.Docs">
+            <summary>
+            子评论列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_CommentsChildren.Total">
+            <summary>
+            总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_CommentsChildren.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_CommentsChildren.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_CommentsChildren.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_CommentsChildren.Parent">
+            <summary>
+            父评论的id
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.EverybodyLoves">
+            <summary>
+            大家都在看
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_EverybodyLoves.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_EverybodyLoves.Limit">
+            <summary>
+            当前最多显示数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_EverybodyLoves.Docs">
+            <summary>
+            漫画列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_EverybodyLoves.Total">
+            <summary>
+            总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_EverybodyLoves.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.PagesCount">
+            <summary>
+            漫画总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Categories">
+            <summary>
+            漫画所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.Thumb">
+            <summary>
+            封面图标信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_EverybodyLoves.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Favourite">
+            <summary>
+            收藏夹
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comics_Favourite">
+            <summary>
+            收藏夹信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Favourite.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Favourite.Total">
+            <summary>
+            收藏总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Favourite.Docs">
+            <summary>
+            当前页具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Favourite.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Favourite.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_Favourite">
+            <summary>
+            收藏夹里的漫画具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Author">
+            <summary>
+            投稿人名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Finished">
+            <summary>
+            是否已经完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.Thumb">
+            <summary>
+            封面信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Favourite.LikesCount">
+            <summary>
+            点赞数量
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Thumb">
+            <summary>
+            文件地址信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Thumb.FileServer">
+            <summary>
+            基址
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Thumb.Path">
+            <summary>
+            文件路径
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Thumb.OriginalName">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Keywords">
+            <summary>
+            获取热词
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Keywords.Keyword">
+            <summary>
+            热词列表
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.LikeComment">
+            <summary>
+            点赞评论
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Login">
             <summary>
             登录
             </summary>
         </member>
-        <member name="T:picacomic.Http.Response.Recommendation">
+        <member name="P:Picacomic.Http.Response.Login.Authorization">
             <summary>
-            TODO:接口暂时没找到数据 备用
+            用户token,有时效，大概为一周？,在登陆成功以后需要将其设置到header里。Head.SetAuthorization
             </summary>
         </member>
-        <member name="T:picacomic.Http.Response.Register">
+        <member name="T:Picacomic.Http.Response.MyComments">
+            <summary>
+            获取我的评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_MyComments.Docs">
+            <summary>
+            评论列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_MyComments.Total">
+            <summary>
+            评论总数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_MyComments.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_MyComments.Page">
+            <summary>
+            当前返回的是第几页评论
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comment_MyComments.Pages">
+            <summary>
+            评论总共有几页
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_MyComments">
+            <summary>
+            评论的具体信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.Id">
+            <summary>
+            当前评论的唯一id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.Content">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.Comic">
+            <summary>
+            评论所在的漫画或者聊天室
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.Hide">
+            <summary>
+            是否被隐藏
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.CreatedAt">
+            <summary>
+            发表日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.DocId">
+            <summary>
+            当前评论的唯一id 
+             同上 _id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.LikesCount">
+            <summary>
+            点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.CommentsCount">
+            <summary>
+            子评论数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.TotalComments">
+            <summary>
+            子评论总数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_MyComments.IsLiked">
+            <summary>
+            是否已经给这条评论点赞
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comic_MyComments">
+            <summary>
+            漫画或者聊天室信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_MyComments.Id">
+            <summary>
+            漫画或者聊天室的唯一id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_MyComments.Title">
+            <summary>
+            漫画或者聊天室的标题
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Platform">
+            <summary>
+            APP基本信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.IsPunched">
+            <summary>
+            是否已经签到
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.LatestApplication">
+            <summary>
+            最后更新信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.ImageServer">
+            <summary>
+            文件下载基址
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.ApiLevel">
+            <summary>
+            sdkVersion?
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.MinApiLevel">
+            <summary>
+            sdkVersion?
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.Categories">
+            <summary>
+            分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Platform.Notification">
+            <summary>
+            通知
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.LatestApplication">
+            <summary>
+            APP更新信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.DownloadUrl">
+            <summary>
+            当前版本app的下载地址
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.UpdateContent">
+            <summary>
+            更新说明
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.Version">
+            <summary>
+            当前版本
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.UpdatedAt">
+            <summary>
+            更新日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.CreatedAt">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.LatestApplication.Apk">
+            <summary>
+            app下载地址信息
+            可以直接使用上面的DownloadUrl
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Apk">
+            <summary>
+            app的下载信息，可以像其他文件一样去拼接
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Apk.OriginalName">
+            <summary>
+            文件名字
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Apk.Path">
+            <summary>
+            文件路径
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Apk.FileServer">
+            <summary>
+            基址
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Profile">
+            <summary>
+            个人资料
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Punch">
+            <summary>
+            签到
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Punch.PunchSuccess">
+            <summary>
+            自定义内容。只要签到成功一次以后，当天内Res都会有值。只有当天第一次签到时，Res的内容才是正确的
+            获取通过GetPlatform里的isPunch字段判断
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.PunchRes">
+            <summary>
+            签到请求返回内容。 只有当天第一次签到成功才会返回正确内容，其他时候只有返回Status为fail
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.PunchRes.Status">
+            <summary>
+            签到操作状态
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.PunchRes.PunchInLastDay">
+            <summary>
+            最后一次签到日期
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Random">
+            <summary>
+            随机本子
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Random.Comics">
+            <summary>
+            本子列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Thumb">
+            <summary>
+            封面图片信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.PagesCount">
+            <summary>
+            漫画总页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Random.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Rank">
+            <summary>
+            排行榜
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Rank.Comics">
+            <summary>
+            排行榜漫画列表
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comic_Rank">
+            <summary>
+            排行榜漫画信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.Thumb">
+            <summary>
+            封面图标信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.ViewsCount">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Rank.LeaderboardCount">
+            <summary>
+            排名分
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Recommendation">
+            <summary>
+            看了這本子的人也在看
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comic_Recommendation">
+            <summary>
+            漫画信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Title">
+            <summary>
+            漫画标题
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.Thumb">
+            <summary>
+            封面图标信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comic_Recommendation.LikesCount">
+            <summary>
+            点赞数？
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Register">
             <summary>
             不出错就是成功！
             </summary>
         </member>
-        <member name="T:picacomic.Http.Response.ResponseBase`1">
+        <member name="T:Picacomic.Http.Response.ResponseBase`1">
             <summary>
             接口返回的数据
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="T:picacomic.Http.Response.SendComment">
+        <member name="T:Picacomic.Http.Response.Search">
+            <summary>
+            普通搜索
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Comics_Search">
+            <summary>
+            匹配信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Search.Docs">
+            <summary>
+            匹配列表
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Search.Total">
+            <summary>
+            匹配总数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Search.Limit">
+            <summary>
+            当前页最大数量
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Search.Page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Comics_Search.Pages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.Doc_Search">
+            <summary>
+            普通搜索返回的漫画信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Id">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Title">
+            <summary>
+            书名
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Author">
+            <summary>
+            投稿人
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.TotalViews">
+            <summary>
+            绅士指名次数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.TotalLikes">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.PagesCount">
+            <summary>
+            漫画页数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.EpsCount">
+            <summary>
+            章节数
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Finished">
+            <summary>
+            是否完结
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Categories">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.Thumb">
+            <summary>
+            封面图标信息
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.DocId">
+            <summary>
+            漫画id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.Doc_Search.LikesCount">
+            <summary>
+            总点赞数
+            </summary>
+        </member>
+        <member name="T:Picacomic.Http.Response.SendComment">
             <summary>
             不出错就是成功
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Id">
+            <summary>
+            用户id
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Email">
+            <summary>
+            用户邮箱，一般都是账号
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Name">
+            <summary>
+            用户昵称
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Birthday">
+            <summary>
+            生日
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Gender">
+            <summary>
+             性别
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Title">
+            <summary>
+            称号？
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Verified">
+            <summary>
+            实名认证？
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Exp">
+            <summary>
+            当前经验值
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Level">
+            <summary>
+            当前等级
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.Characters">
+            <summary>
+            希腊奶
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.CreatedAt">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="P:Picacomic.Http.Response.User.IsPunched">
+            <summary>
+            是否已经签到
+            </summary>
+        </member>
+        <member name="P:picacomic.Http.Response.Login.Authorization">
+            <summary>
+            用户token,有时效，大概为一周？,在登陆成功以后需要将其设置到header里。Head.SetAuthorization
+            </summary>
+        </member>
+        <member name="P:picacomic.Http.Response.Punch.PunchSuccess">
+            <summary>
+            自定义内容。只要签到成功一次以后，当天内Res都会有值。只有当天第一次签到时，Res的内容才是正确的
+            获取通过GetPlatform里的isPunch字段判断
             </summary>
         </member>
     </members>

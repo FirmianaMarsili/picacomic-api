@@ -1,46 +1,40 @@
 ﻿using Newtonsoft.Json.Linq;
-using picacomic.Http.Response;
+using Picacomic.Http.Request;
+using Picacomic.Http.Response;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace picacomic
+namespace Picacomic
 {
     /// <summary>   
-    /// <para>特别注意的是如果返回的json里只有 {code = 200,message = "success"} 说明此次后台未进行正确处理</para>
-    /// <para>大致原因有：method错误、param出错、格式不对、URL编码错误、header错误等等</para>
-    /// <para>哔咔一般都是以40的数量为一页，例：1-40张图片为一页，1-40章节为一页</para>
-    /// <para>如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量</para>
+    /// 哔咔一般都是以40为基准   例：1-40张图片为一页，1-40章节为一页。 如果有特殊情况，可以查看返回数据中的 limit 字段，此为限制每页的最大数量
     /// </summary>
-    public class PicacomicUrl
+    public partial class PicAcgReq
     {
         #region Function-Ex
 
         /// <summary>
         /// 排序规则
         /// </summary>
-        public enum sort
+        public enum Sort
         {
             /// <summary>
             /// 默认
             /// </summary>
             ua,
-
             /// <summary>
             ///  新到旧
             /// </summary>
             dd,
-
             /// <summary>
             /// 旧到新
             /// </summary>
             da,
-
             /// <summary>
             /// 爱心最多
             /// </summary>
             ld,
-
             /// <summary>
             /// 绅士指数最多
             /// </summary>
@@ -50,7 +44,7 @@ namespace picacomic
         /// <summary>
         /// 性别
         /// </summary>
-        public enum gender
+        public enum Gender
         {
             m,
             f,
@@ -60,14 +54,28 @@ namespace picacomic
         /// <summary>
         /// 排行榜分类
         /// </summary>
-        public enum tt
+        public enum TT
         {
-            H24,
+            /// <summary>
+            /// 今日
+            /// </summary>
+            H24,  //
+            /// <summary>
+            /// 本周
+            /// </summary>
             D7,
+            /// <summary>
+            /// 本月
+            /// </summary>
             D30
         }
 
 
+        /// <summary>
+        /// 如果注册账号或者登陆时，账号是邮箱格式，这里应该特别处理一下@
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         private static string UrlEncode(string str)
         {
             StringBuilder sb = new();
@@ -87,14 +95,12 @@ namespace picacomic
                     sb.Append(c);
                 }
             }
-
             return sb.ToString();
         }
-
         #endregion
 
 
-        #region IP
+        #region  IP
 
         /// <summary>
         /// 获取线路ip
@@ -106,8 +112,9 @@ namespace picacomic
             string url = "http://68.183.234.72/init";
             return url;
         }
-
         #endregion
+
+
 
 
         #region USER
@@ -117,60 +124,48 @@ namespace picacomic
         /// </summary>
         public static async Task<Login> Login(string email, string password)
         {
-            JObject jd = new()
+            LoginReq req = new LoginReq()
             {
-                ["email"] = email,
-                ["password"] = password
+                Email = email,
+                Password = password
             };
-            Header header = new(
-                url: "auth/sign-in",
-                method: HttpMethod.POST,
-                param: jd.ToString());
-
+            Header header = new Header("auth/sign-in", req);
             return await HttpWeb.SendAsync<Login>(header);
         }
+        //yyyy/mm/dd
 
         /// <summary>
         /// 注册
-        /// </summary>       
-        /// <param name="birthday">yyyy/mm/dd</param>       
-        /// 
+        /// </summary>
+        /// <param name="email">账号</param>
+        /// <param name="password">密码</param>
+        /// <param name="name">昵称</param>
+        /// <param name="birthday">生日  格式为：//yyyy/MM/dd</param>
+        /// <param name="gender">性别</param>
         /// <param name="question1">问题1</param>
-        /// <param name="answer1">答案1</param>       
+        /// <param name="answer1">答案1</param>
+        /// <param name="question2"></param>
+        /// <param name="answer2"></param>
+        /// <param name="question3"></param>
+        /// <param name="answer3"></param>
         /// <returns></returns>
-        public static async Task<Register> Register(
-            string email,
-            string password,
-            string name,
-            string birthday, //yyyy/mm/dd
-            gender gender, // m,f,bot
-            string question1,
-            string answer1,
-            string question2,
-            string answer2,
-            string question3,
-            string answer3)
+        public static async Task<Register> Register(string email, string password, string name, DateTimeOffset birthday, Gender gender, string question1, string answer1, string question2, string answer2, string question3, string answer3)
         {
-            JObject jd = new()
+            RegisterReq req = new RegisterReq()
             {
-                ["email"] = email,
-                ["password"] = password,
-                ["name"] = name,
-                ["birthday"] = birthday,
-                ["gender"] = gender.ToString(),
-                ["answer1"] = answer1,
-                ["answer2"] = answer2,
-                ["answer3"] = answer3,
-                ["question1"] = question1,
-                ["question2"] = question2,
-                ["question3"] = question3
+                Email = email,
+                Password = password,
+                Name = name,
+                Birthday = birthday.ToString("yyyy/MM/dd"),
+                Gender = gender.ToString(),
+                Question1 = question1,
+                Answer1 = answer1,
+                Question2 = question2,
+                Answer2 = answer2,
+                Question3 = question3,
+                Answer3 = answer3,
             };
-
-
-            Header header = new(
-                url: "auth/register",
-                method: HttpMethod.POST,
-                param: jd.ToString());
+            Header header = new Header("auth/register", req);
             return await HttpWeb.SendAsync<Register>(header);
         }
 
@@ -182,7 +177,7 @@ namespace picacomic
         public static async Task<Profile> Profile(string id = "")
         {
             string url = $"users/{(id == "" ? "" : id + "/")}profile";
-            Header header = new(url: url);
+            Header header = new Header(url);
             return await HttpWeb.SendAsync<Profile>(header);
         }
 
@@ -192,9 +187,7 @@ namespace picacomic
         /// </summary>
         public static async Task<Punch> Punch()
         {
-            Header header = new(
-                url: "users/punch-in",
-                method: HttpMethod.POST);
+            Header header = new Header("users/punch-in", null);
             return await HttpWeb.SendAsync<Punch>(header);
         }
 
@@ -202,10 +195,10 @@ namespace picacomic
         /// 聊天室
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetChat> GetChat()
+        public static async Task<Chat> GetChat()
         {
-            Header header = new(url: "chat");
-            return await HttpWeb.SendAsync<GetChat>(header);
+            Header header = new Header("chat");
+            return await HttpWeb.SendAsync<Chat>(header);
         }
 
         /// <summary>
@@ -213,44 +206,89 @@ namespace picacomic
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetMyComments> GetMyComments(int page = 1)
+        public static async Task<MyComments> GetMyComments(int page = 1)
         {
-            Header header = new($"users/my-comments?page={page.ToString()}");
-            return await HttpWeb.SendAsync<GetMyComments>(header);
+            Header header = new Header($"users/my-comments?page={page.ToString()}");
+            return await HttpWeb.SendAsync<MyComments>(header);
         }
+
 
         #endregion
 
 
-        #region Book
+        #region Book 
 
         /// <summary>
         /// 获取App基本信息
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetPlatform> GetPlatform()
+        public static async Task<Platform> GetPlatform()
         {
-            Header header = new(url: "init?platform=android");
-            return await HttpWeb.SendAsync<GetPlatform>(header);
+            Header header = new Header("init?platform=android");
+            return await HttpWeb.SendAsync<Platform>(header);
         }
 
         /// <summary>
-        /// 获取app主页上几大目录
+        /// 获取app主页上几大分类
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetCategory> GetCategory()
+        public static async Task<Category> GetCategory()
         {
-            Header header = new(url: "categories");
-            return await HttpWeb.SendAsync<GetCategory>(header);
+            Header header = new Header("categories");
+            return await HttpWeb.SendAsync<Category>(header);
+        }
+
+        /// <summary>
+        /// 通过分类搜索
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="categories">本子分类</param>
+        /// <param name="sort">排序  </param>
+        /// <returns></returns>
+        public static async Task<CategoriesSearch> CategoriesSearch(string categories, int page = 1, Sort sort = Sort.ua)
+        {
+            Header header = new Header($"comics?page={page.ToString()}&c={UrlEncode(categories)}&s={sort.ToString()}");
+            return await HttpWeb.SendAsync<CategoriesSearch>(header);
+        }
+
+        /// <summary>
+        /// 关键词搜索
+        /// </summary>
+        /// <param name="keyword">关键字或者标签</param>
+        /// <param name="page"></param>
+        /// <param name="sort"></param>
+        /// <returns></returns>
+        public static async Task<AdvancedSearch> AdvancedSearch(string keyword, int page = 1, Sort sort = Sort.ua)
+        {
+            AdvancedSearchReq req = new AdvancedSearchReq()
+            {
+                Keyword = keyword,
+                Sort = sort.ToString()
+            };
+            Header header = new Header($"comics/advanced-search?page={page}", req);
+            return await HttpWeb.SendAsync<AdvancedSearch>(header);
+        }
+
+        /// <summary>
+        /// 普通搜索
+        /// 一般app在不切换排序时是使用的这个接口
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static async Task<Search> Search(string keyword, int page = 1)
+        {
+            Header header = new Header($"comics/search?page={page.ToString()}&q={UrlEncode(keyword)}");
+            return await HttpWeb.SendAsync<Search>(header);
         }
 
         /// <summary>
         /// 获取收藏
         /// </summary>
         /// <param name="page"></param>        
-        public static async Task<Favourite> Favourite(sort sort = sort.ua, int page = 1)
+        public static async Task<Favourite> Favourite(Sort sort = Sort.ua, int page = 1)
         {
-            Header header = new(url: $"users/favourite?s={sort.ToString()}&page={page.ToString()}");
+            Header header = new Header($"users/favourite?s={sort.ToString()}&page={page.ToString()}");
             return await HttpWeb.SendAsync<Favourite>(header);
         }
 
@@ -261,69 +299,18 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<AddFavourite> AddFavourite(string bookId)
         {
-            Header header = new(
-                url: $"comics/{bookId}/favourite",
-                method: HttpMethod.POST);
+            Header header = new Header($"comics/{bookId}/favourite", null);
             return await HttpWeb.SendAsync<AddFavourite>(header);
-        }
-
-
-        /// <summary>
-        /// 分类搜索
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="categories">本子标签</param>
-        /// <param name="sort">排序  </param>
-        /// <returns></returns>
-        public static async Task<CategoriesSearch> CategoriesSearch(string categories, int page = 1,
-            sort sort = sort.ua)
-        {
-            Header header = new(url: $"comics?page={page.ToString()}&c={UrlEncode(categories)}&s={sort.ToString()}");
-            return await HttpWeb.SendAsync<CategoriesSearch>(header);
-        }
-
-        /// <summary>
-        /// 关键词搜索
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <param name="page"></param>
-        /// <param name="sort"></param>
-        /// <returns></returns>
-        public static async Task<AdvancedSearch> AdvancedSearch(string keyword, int page = 1, sort sort = sort.ua)
-        {
-            JObject jd = new()
-            {
-                ["keyword"] = keyword,
-                ["sort"] = sort.ToString()
-            };
-            Header header = new(
-                url: $"comics/advanced-search?page={page}",
-                method: HttpMethod.POST,
-                param: jd.ToString());
-
-            return await HttpWeb.SendAsync<AdvancedSearch>(header);
-        }
-
-        /// <summary>
-        /// 普通搜索
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <param name="page"></param>
-        /// <returns></returns>
-        public static async Task<Search> Search(string keyword, int page = 1)
-        {
-            Header header = new(url: $"comics/search?page={page.ToString()}&q={UrlEncode(keyword)}");
-            return await HttpWeb.SendAsync<Search>(header);
-        }
+        }        
 
         /// <summary>
         /// 排行榜
         /// </summary>
         /// <param name="day"> H24  D7  D30</param>
         /// <returns></returns>
-        public static async Task<Rank> Rank(tt tt)
+        public static async Task<Rank> Rank(TT tt)
         {
-            Header header = new(url: $"comics/leaderboard?tt={tt.ToString()}&ct=VC");
+            Header header = new Header($"comics/leaderboard?tt={tt.ToString()}&ct=VC");
             return await HttpWeb.SendAsync<Rank>(header);
         }
 
@@ -332,21 +319,20 @@ namespace picacomic
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
-        public static async Task<GetComicsBook> GetComicsBook(string bookId)
+        public static async Task<ComicsBook> GetComicsBook(string bookId)
         {
-            Header header = new(url: $"comics/{bookId}");
-            return await HttpWeb.SendAsync<GetComicsBook>(header);
+            Header header = new Header($"comics/{bookId}");
+            return await HttpWeb.SendAsync<ComicsBook>(header);
         }
 
         /// <summary>
         /// 看了這本子的人也在看
-        /// 暂时无数据
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
         public static async Task<Recommendation> Recommendation(string bookId)
         {
-            Header header = new(url: $"comics/{bookId}/recommendation");
+            Header header = new Header($"comics/{bookId}/recommendation");
             return await HttpWeb.SendAsync<Recommendation>(header);
         }
 
@@ -356,10 +342,10 @@ namespace picacomic
         /// <param name="bookId"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetComicsBookEps> GetComicsBookEps(string bookId, int page = 1)
+        public static async Task<ComicsBookEps> GetComicsBookEps(string bookId, int page = 1)
         {
-            Header header = new(url: $"comics/{bookId}/eps?page={page.ToString()}");
-            return await HttpWeb.SendAsync<GetComicsBookEps>(header);
+            Header header = new Header($"comics/{bookId}/eps?page={page.ToString()}");
+            return await HttpWeb.SendAsync<ComicsBookEps>(header);
         }
 
 
@@ -369,40 +355,40 @@ namespace picacomic
         /// <param name="bookId"></param>
         /// <param name="epsId">查看上面那个函数 </param>
         /// <returns></returns>
-        public static async Task<GetComicsBookOrder> GetComicsBookOrder(string bookId, int epsId, int page = 1)
+        public static async Task<ComicsBookOrder> GetComicsBookOrder(string bookId, int epsId, int page = 1)
         {
-            Header header = new(url: $"comics/{bookId}/order/{epsId.ToString()}/pages?page={page.ToString()}");
-            return await HttpWeb.SendAsync<GetComicsBookOrder>(header);
+            Header header = new Header($"comics/{bookId}/order/{epsId.ToString()}/pages?page={page.ToString()}");
+            return await HttpWeb.SendAsync<ComicsBookOrder>(header);
         }
 
         /// <summary>
         /// 获取热词
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetKeywords> GetKeywords()
+        public static async Task<Keywords> GetKeywords()
         {
-            Header header = new(url: "keywords");
-            return await HttpWeb.SendAsync<GetKeywords>(header);
+            Header header = new Header("keywords");
+            return await HttpWeb.SendAsync<Keywords>(header);
         }
 
         /// <summary>
         /// 随机一个本子
         /// </summary>
         /// <returns></returns>
-        public static async Task<picacomic.Http.Response.GetRandom> GetRandom()
+        public static async Task<Http.Response.Random> GetRandom()
         {
-            Header header = new(url: "comics/random");
-            return await HttpWeb.SendAsync<picacomic.Http.Response.GetRandom>(header);
+            Header header = new Header("comics/random");
+            return await HttpWeb.SendAsync<Http.Response.Random>(header);
         }
 
         /// <summary>
         /// 本子神推荐
         /// </summary>
         /// <returns></returns>
-        public static async Task<GetCollections> GetCollections()
+        public static async Task<Collections> GetCollections()
         {
-            Header header = new(url: "collections");
-            return await HttpWeb.SendAsync<GetCollections>(header);
+            Header header = new Header("collections");
+            return await HttpWeb.SendAsync<Collections>(header);
         }
 
         /// <summary>
@@ -412,24 +398,8 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<EverybodyLoves> EverybodyLoves(int page = 1)
         {
-            Header header =
-                new(url: $"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
+            Header header = new Header($"comics?page={page.ToString()}&c=%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%9C%A8%E7%9C%8B&s=ld");
             return await HttpWeb.SendAsync<EverybodyLoves>(header);
-        }
-
-
-        /// <summary>
-        /// 下载一个图片
-        /// 图片信息里包含里此两个参数
-        /// 构建一个url,自己实现
-        /// </summary>
-        /// <param name="fileServer"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string DownloadBook(string fileServer, string path)
-        {
-            //使用HttpClient WebClient HttpWebRequest 都可以，不需要设置header
-            return $"{fileServer}/static/{path}";
         }
 
         /// <summary>
@@ -438,10 +408,10 @@ namespace picacomic
         /// <param name="bookId">5822a6e3ad7ede654696e482 此为哔咔留言板默认的ID</param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetComments> GetComments(string bookId = "5822a6e3ad7ede654696e482", int page = 1)
+        public static async Task<Comments> GetComments(string bookId = "5822a6e3ad7ede654696e482", int page = 1)
         {
-            Header header = new(url: $"comics/{bookId}/comments?page={page.ToString()}");
-            return await HttpWeb.SendAsync<GetComments>(header);
+            Header header = new Header($"comics/{bookId}/comments?page={page.ToString()}");
+            return await HttpWeb.SendAsync<Comments>(header);
         }
 
         /// <summary>
@@ -450,10 +420,10 @@ namespace picacomic
         /// <param name="commentId"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<GetCommentsChildren> GetCommentsChildren(string commentId, int page = 1)
+        public static async Task<CommentsChildren> GetCommentsChildren(string commentId, int page = 1)
         {
-            Header header = new(url: $"comments/{commentId}/childrens?page={page.ToString()}");
-            return await HttpWeb.SendAsync<GetCommentsChildren>(header);
+            Header header = new Header($"comments/{commentId}/childrens?page={page.ToString()}");
+            return await HttpWeb.SendAsync<CommentsChildren>(header);
         }
 
         /// <summary>
@@ -466,9 +436,7 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<LikeComment> LikeComment(string commentId)
         {
-            Header header = new(
-                url: $"comments/{commentId}/like",
-                method: HttpMethod.POST);
+            Header header = new Header($"comments/{commentId}/like", null);
             return await HttpWeb.SendAsync<LikeComment>(header);
         }
 
@@ -481,15 +449,11 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<SendComment> SendComment(string content, string bookId = "5822a6e3ad7ede654696e482")
         {
-            JObject jd = new()
+            SendCommentReq req = new SendCommentReq()
             {
-                ["content"] = content
+                Content = content
             };
-
-            Header header = new(
-                url: $"comics/{bookId}/comments",
-                method: HttpMethod.POST,
-                param: jd.ToString());
+            Header header = new Header($"comics/{bookId}/comments", req);
             return await HttpWeb.SendAsync<SendComment>(header);
         }
 
@@ -501,18 +465,27 @@ namespace picacomic
         /// <returns></returns>
         public static async Task<SendComment> SendCommentChild(string commentId, string content)
         {
-            JObject jd = new()
+            SendCommentReq child = new SendCommentReq()
             {
-                ["content"] = content
+                Content = content
             };
-
-            Header header = new(
-                url: $"comments/{commentId}",
-                method: HttpMethod.POST,
-                param: jd.ToString());
+            Header header = new Header($"comments/{commentId}", child);
             return await HttpWeb.SendAsync<SendComment>(header);
         }
 
         #endregion
+
+        /// <summary>
+        /// 拼接出图片下载地址
+        /// </summary>
+        /// <param name="fileServer"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetFilePath(string fileServer, string path)
+        {
+            //使用HttpClient WebClient HttpWebRequest 都可以，不需要设置header
+            return $"{fileServer}/static/{path}";
+        }
+
     }
 }

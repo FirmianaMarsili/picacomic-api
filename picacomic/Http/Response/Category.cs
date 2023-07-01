@@ -4,20 +4,34 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace picacomic.Http.Response
+namespace Picacomic.Http.Response
 {
-    public class GetCategory
+    /// <summary>
+    /// 分类信息
+    /// </summary>
+    public class Category
     {
         [JsonProperty("categories")]
         public List<Categorie> Categories { get; set; }
     }
+
+    /// <summary>
+    /// 分类
+    /// </summary>
     public class Categorie
     {
-        [JsonProperty("title")]
+        /// <summary>
+        /// 类别名字
+        /// </summary>
+        [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 
-        [JsonProperty("thumb")]
+        /// <summary>
+        /// 分类封面信息
+        /// </summary>
+        [JsonProperty("thumb", NullValueHandling = NullValueHandling.Ignore)]
         public Thumb Thumb { get; set; }
+
 
         [JsonProperty("isWeb", NullValueHandling = NullValueHandling.Ignore)]
         public bool? IsWeb { get; set; }
@@ -28,6 +42,9 @@ namespace picacomic.Http.Response
         [JsonProperty("link", NullValueHandling = NullValueHandling.Ignore)]
         public Uri Link { get; set; }
 
+        /// <summary>
+        /// id
+        /// </summary>
         [JsonProperty("_id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { get; set; }
 

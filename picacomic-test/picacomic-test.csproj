@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>picacomic_test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\picacomic\picacomic.csproj" />
+    <ProjectReference Include="..\picacomic\Picacomic.csproj" />
   </ItemGroup>
 
 </Project>
